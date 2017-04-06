@@ -42,6 +42,22 @@ void AnnotationFinder::_setLastErrorMessage ( const QString &message ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void AnnotationFinder::_startFindAnnotations ( ) {
     _sourceCodeFilesModel.fillModelWithRelativeRootPath ( _sourceCodeFilesPath );
+    for ( QFileInfo sourceCodeFile : _sourceCodeFilesModel.sourceCodeFilesReadOnly ( ) ) {
+        _currentSourceCodeFile = sourceCodeFile;
+        _findAnnotationsInCurrentFile ( );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_findAnnotationsInCurrentFile ( ) {
+    if ( _currentSourceCodeFile.size ( ) > 10240000 ) {
+        qWarning ( ) << _ModuleName << QString ( "Can't read source code file %1. Is to big !" )
+                     .arg ( _currentSourceCodeFile.fileName ( ) );
+        return;
+    }
+    QFile file ( _currentSourceCodeFile.filePath ( ) );
+    if ( file.open ( QIODevice::ReadOnly ) ) {
+//        . file.readAll ( );
+    }
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
