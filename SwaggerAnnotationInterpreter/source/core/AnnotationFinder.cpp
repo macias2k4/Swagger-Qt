@@ -43,21 +43,83 @@ void AnnotationFinder::_setLastErrorMessage ( const QString &message ) {
 void AnnotationFinder::_startFindAnnotations ( ) {
     _sourceCodeFilesModel.fillModelWithRelativeRootPath ( _sourceCodeFilesPath );
     for ( QFileInfo sourceCodeFile : _sourceCodeFilesModel.sourceCodeFilesReadOnly ( ) ) {
-        _currentSourceCodeFile = sourceCodeFile;
+        _currentSourceCodeFileInfo = sourceCodeFile;
         _findAnnotationsInCurrentFile ( );
     }
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void AnnotationFinder::_findAnnotationsInCurrentFile ( ) {
-    if ( _currentSourceCodeFile.size ( ) > 10240000 ) {
-        qWarning ( ) << _ModuleName << QString ( "Can't read source code file %1. Is to big !" )
-                     .arg ( _currentSourceCodeFile.fileName ( ) );
+    _currentSourceCodeFile.setFileName ( _currentSourceCodeFileInfo.filePath ( ) );
+    if ( !_currentSourceCodeFile.open ( QIODevice::ReadOnly ) ) {
+        _setLastErrorMessage ( QString ( "Can't open file %1" ).arg (
+                                   _currentSourceCodeFileInfo.fileName ( ) ) );
         return;
     }
-    QFile file ( _currentSourceCodeFile.filePath ( ) );
-    if ( file.open ( QIODevice::ReadOnly ) ) {
-//        . file.readAll ( );
+    _readCurrentFile ( );
+    _currentSourceCodeFile.close ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_readCurrentFile ( ) {
+    while ( !_currentSourceCodeFile.atEnd ( ) ) {
+        _currentLine.clear ( );
+        _currentLine.append ( _currentSourceCodeFile.readLine ( ) );
+        _readCurrentLine ( );
     }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_readCurrentLine ( ) {
+    _checkIsCurrentLineStartAnnotationBlock ( );
+    if ( _isAnnotationBlockStarted ) {
+        _appendCurrentLineToAnnotationBlock ( );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_checkIsCurrentLineStartAnnotationBlock ( ) {
+    if ( !_isAnnotationBlockStarted
+            && _currentLine.indexOf ( Swagger::Base::SwaggerFieldBase::AnnotationKeyword ) > 0 ) {
+        _clearAllSingleAnnotationVariables ( );
+        _isAnnotationBlockStarted = true;
+        _extractCommentSignsFromCurrentLine ( );
+        _extractAnnotationNameFromCurrentLine ( );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_clearAllSingleAnnotationVariables ( ) {
+    _currentAnnotationBuffor.clear ( );
+    _commentSigns = QString ( );
+    _currentAnnotationName = QString ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_extractCommentSignsFromCurrentLine ( ) {
+    int indexOf =  _currentLine.indexOf ( Swagger::Base::SwaggerFieldBase::AnnotationKeyword );
+    _commentSigns = _currentLine;
+    _commentSigns.remove ( indexOf - 1, _commentSigns.size ( ) - indexOf + 1 );
+    _commentSigns.remove ( "\"" );
+    _commentSigns = _commentSigns.trimmed ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_extractAnnotationNameFromCurrentLine ( ) {
+    int indexOfAnnotation =  _currentLine.indexOf ( Swagger::Base::SwaggerFieldBase::AnnotationKeyword );
+    int indexOfJson = _currentLine.indexOf ( '{', indexOfAnnotation );
+    _currentAnnotationName = _currentLine.mid ( indexOfAnnotation, indexOfJson - indexOfAnnotation );
+    _currentAnnotationName.remove ( "\"" );
+    _currentAnnotationName = _currentAnnotationName.trimmed ( );
+    _currentLine.remove ( indexOfAnnotation - 1, indexOfJson - indexOfAnnotation + 1 );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void AnnotationFinder::_appendCurrentLineToAnnotationBlock ( ) {
+    int indexOf = _currentLine.indexOf ( _commentSigns );
+    _currentLine.remove ( indexOf, _commentSigns.length ( ) );
+    _currentLine = _currentLine.trimmed ( );
+    _currentAnnotationBuffor.append ( _currentLine );
+    if ( _isCurrentAnnotationBufforIsComplete ( ) ) {
+        qDebug ( ) << "annotation" << QJsonDocument::fromJson ( _currentAnnotationBuffor ).toJson ( );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+bool AnnotationFinder::_isCurrentAnnotationBufforIsComplete ( ) {
+    QJsonObject annotation = QJsonDocument::fromJson ( _currentAnnotationBuffor ).object ( );
+    return !annotation.isEmpty ( );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

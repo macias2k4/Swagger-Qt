@@ -44,7 +44,7 @@ public slots:
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
-    const QStringList _SourceCodeFilesExtension = { ".h", ".cpp" };
+    const QStringList _SourceCodeFilesExtension = { "*.h", "*.cpp" };
     /// \brief _sourceCodeFiles -> source code files finded in set path
     QFileInfoList _sourceCodeFiles;
     /// \brief _currentSourceCodeFile -> current adding source code file to list

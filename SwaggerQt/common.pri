@@ -1,4 +1,4 @@
-# SwaggerApi - library
+include($$PWD/../SwaggerAnnotationInterpreter/common.pri)
 
 INCLUDEPATH += $$PWD \
     $$PWD/source \

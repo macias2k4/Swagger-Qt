@@ -14,10 +14,13 @@
 #include <QObject>
 #include <QFileInfo>
 #include <QDirIterator>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
 #include <SourceCodeFilesModel.h>
+#include <SwaggerFieldBase.h>
 
 namespace Swagger {
 namespace Core {
@@ -59,8 +62,20 @@ private:
     QString _lastErrorMessage = QString ( );
     /// \brief _sourceCodeFilesModel -> model to keep list of found source code files
     Model::SourceCodeFilesModel _sourceCodeFilesModel;
+    /// \brief _currentSourceCodeFileInfo -> current reading source code file info
+    QFileInfo _currentSourceCodeFileInfo;
     /// \brief _currentSourceCodeFile -> current reading source code file
-    QFileInfo _currentSourceCodeFile;
+    QFile _currentSourceCodeFile;
+    /// \brief _currentLine -> current line reading from file
+    QByteArray _currentLine;
+    /// \brief _isAnnotationBlockStarted -> keep information is annotation block started
+    bool _isAnnotationBlockStarted = false;
+    /// \brief _currentAnnotationBuffor -> buffor of current annotation
+    QByteArray _currentAnnotationBuffor;
+    /// \brief _commentSigns -> comment signs found in annotation first line
+    QString _commentSigns = QString ( );
+    /// \brief _commentSigns -> name of current annotation
+    QString _currentAnnotationName = QString ( );
 
 
 
@@ -77,6 +92,28 @@ private:
     void _startFindAnnotations ( );
     /// \brief _findAnnotationsInCurrentFile -> search annotations in current file
     void _findAnnotationsInCurrentFile ( );
+    /// \brief _readCurrentFile -> read current file
+    void _readCurrentFile ( );
+    /// \brief _readCurrentLine -> read current line of file
+    void _readCurrentLine ( );
+    /// \brief _checkIsCurrentLineStartAnnotationBlock -> check is current line start annotation
+    /// block
+    void _checkIsCurrentLineStartAnnotationBlock ( );
+    /// \brief _clearAllSingleAnnotationVariables -> clear all variables using in single annotation
+    /// read
+    void _clearAllSingleAnnotationVariables ( );
+    /// \brief _extractCommentSignsFromCurrentLine -> extract comment signs from current line,
+    /// when it has annotation keyword
+    void _extractCommentSignsFromCurrentLine ( );
+    /// \brief _extractAnnotationNameFromCurrentLine -> extract annotation name from current line,
+    /// when it has annotation keyword
+    void _extractAnnotationNameFromCurrentLine ( );
+    /// \brief _appendCurrentLineToAnnotationBlock -> adding current line to anotation block,
+    /// after deleting comment signs
+    void _appendCurrentLineToAnnotationBlock ( );
+    /// \brief _isCurrentAnnotationBufforIsComplete -> check is current annotation buffor is correct
+    /// JSon object
+    bool _isCurrentAnnotationBufforIsComplete ( );
 
 };
 

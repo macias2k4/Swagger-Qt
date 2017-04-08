@@ -31,6 +31,8 @@ public:
     virtual QString fieldName ( ) const = 0;
 
     // - property
+    /// \brief AnnotationKeyword -> swagger annotation keyword
+    static const QString AnnotationKeyword;
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //

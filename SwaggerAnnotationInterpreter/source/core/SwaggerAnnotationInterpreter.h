@@ -63,7 +63,6 @@ private:
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
-    ///
     /// \brief _setConnections -> set connections between class objects
     void _setConnections ( );
     /// \brief _clearAllInterpreteVariables -> clearing all variables which are used in interprete

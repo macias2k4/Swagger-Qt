@@ -1,35 +1,54 @@
 /**
-  * \file     SwaggerObject.h
+  * \file     SwaggerQt.h
   * \author   m.lamparski
-  * \date     2017-04-05 -> $Date$
+  * \date     2017-04-08 -> $Date$
   * \version  $Revision$
-  * \brief    File with root object of swagger document
+  * \brief    File with main class of application SwaggerQt
 
 */
-#ifndef SWAGGER_H
-#define SWAGGER_H
+#ifndef SWAGGERQT_H
+#define SWAGGERQT_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Qt
 #include <QObject>
 
-namespace Swagger {
-namespace Data {
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+// Swagger-Qt
+#include <SwaggerAnnotationInterpreter.h>
 
-/// \brief Swagger -> root object of swagger document
-class Swagger : public QObject
-{
+namespace Swagger {
+namespace Core {
+
+/// \brief SwaggerQt ->  main class of application SwaggerQt
+class SwaggerQt : public QObject {
     Q_OBJECT
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    explicit Swagger ( QObject *parent = 0 );
-    ~Swagger ( );
+    /// @Swg.Swagger {
+    ///     "host" : "192.168.200.57",
+    ///     "basePath" : "/pxvs",
+    ///     "schemas" : ["http"],
+    ///     "@Swg.Info" : {
+    ///         "title" : "PxVS Web Methods server"
+    ///     },
+    ///     "produces" : ["application/json"],
+    ///     "@Swg.Paths" : {
+    ///
+    ///     }
+    /// }
+    explicit SwaggerQt ( QObject *parent = 0 );
+    ~SwaggerQt ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
+    /// \brief generateSwaggerFile -> generate swagger file from source code files
+    void generateSwaggerFile ( );
 
     // - property
+    /// \brief setSourceCodeFilesPath -> set path to the source files to search
+    void setSourceCodeFilesPath ( const QString &sourceCodeFilesPath );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -42,17 +61,17 @@ public slots:
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
-    /// \brief _swagger -> Required. Specifies the Swagger Specification version being used  (2.0)
-    QString _swagger = "2.0";
-    // InfoField ? InfoObject ->
-    /// \brief _host -> The host (name or ip) serving the AP
-    QString _host = QString ( );
-    /// \brief _basePath -> The base path on which the API is served, which is relative to the host
-    QString _basePath = QString ( );
+    /// \brief _ModuleName -> name of module
+    const QString _ModuleName = "<SwaggerQt>";
+    /// \brief _swaggerApi -> objest of swagger-Qt api library
+    SwaggerAnnotationInterpreter _swaggerApi;
+
+    // ────────────────────────────────────────────────────────────────────────────────────────── //
+    // methods
 
 };
 
-} // Data
+} // Core
 } // Swagger
 
-#endif // SWAGGER_H
+#endif // SWAGGERQT_H

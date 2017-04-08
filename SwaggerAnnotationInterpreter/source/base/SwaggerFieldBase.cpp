@@ -10,5 +10,7 @@ SwaggerFieldBase::SwaggerFieldBase ( QObject *parent ) : QObject ( parent ) {
 SwaggerFieldBase::~SwaggerFieldBase ( ) {
 }
 
+const QString SwaggerFieldBase::AnnotationKeyword = "@Swg";
+
 } // Base
 } // Swagger
