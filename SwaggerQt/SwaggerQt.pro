@@ -12,7 +12,7 @@ TEMPLATE = app
 include($$PWD/source/source.pri)
 
 # link library: SwaggeerApi
-LIBS += -L$$OUT_PWD/../SwaggerAnnotationInterpreter -lSwaggerAnnotationInterpreter
+LIBS += -L$$OUT_PWD/../SwaggerApi -lSwaggerApi
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

@@ -15,7 +15,7 @@
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
-#include <SwaggerAnnotationInterpreter.h>
+#include <SwaggerApi.h>
 
 namespace Swagger {
 namespace Core {
@@ -26,7 +26,7 @@ class SwaggerQt : public QObject {
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    /// @Swg.Swagger {
+    /// "@Swg.Swagger" {
     ///     "host" : "192.168.200.57",
     ///     "basePath" : "/pxvs",
     ///     "schemas" : ["http"],
@@ -64,7 +64,7 @@ private:
     /// \brief _ModuleName -> name of module
     const QString _ModuleName = "<SwaggerQt>";
     /// \brief _swaggerApi -> objest of swagger-Qt api library
-    SwaggerAnnotationInterpreter _swaggerApi;
+    SwaggerApi _swaggerApi;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
