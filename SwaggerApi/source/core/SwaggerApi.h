@@ -1,5 +1,5 @@
 /**
-  * \file     SwaggerAnnotationInterpreter.h
+  * \file     SwaggerApi.h
   * \author   m.lamparski
   * \date     2017-04-05 -> $Date$
   * \version  $Revision$
@@ -7,29 +7,30 @@
   * path
 
 */
-#ifndef SWAGGERANNOTATIONINTERPRETER_H
-#define SWAGGERANNOTATIONINTERPRETER_H
+#ifndef SWAGGERAPI_H
+#define SWAGGERAPI_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Qt
 #include <QObject>
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-// Swagger
-#include "swaggerannotationinterpreter_global.h"
+// Swagger-Qt
+#include "swaggerapi_global.h"
 #include <AnnotationFinder.h>
+#include <SwaggerFiller.h>
 
 namespace Swagger {
 namespace Core {
 
-/// \brief SwaggerAnnotationInterpreter -> main class of library
-class SWAGGERANNOTATIONINTERPRETERSHARED_EXPORT SwaggerAnnotationInterpreter : public QObject {
+/// \brief SwaggerApi -> main class of library
+class SWAGGERAPISHARED_EXPORT SwaggerApi : public QObject {
     Q_OBJECT
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    SwaggerAnnotationInterpreter ( );
-    ~SwaggerAnnotationInterpreter ( );
+    SwaggerApi ( QObject *parent = 0 );
+    ~SwaggerApi ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -60,6 +61,10 @@ private:
     QString _lastErrorMessage = QString ( );
     /// \brief _annotationFinder -> object to search annotation in source code files
     AnnotationFinder _annotationFinder;
+    /// \brief _swagger -> root object of swagger document
+    Data::Swagger _swagger;
+    /// \brief _swaggerFiller -> filler Swagger object by annotations
+    SwaggerFiller _swaggerFiller;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -76,10 +81,10 @@ private:
     void _startInterprete ( );
     /// \brief _findAnnotations -> start to search annotiations in source files in set path
     void _findAnnotations ( );
-;
+
 };
 
 } // Core
 } // Swagger
 
-#endif // SWAGGERANNOTATIONINTERPRETER_H
+#endif // SWAGGERAPI_H

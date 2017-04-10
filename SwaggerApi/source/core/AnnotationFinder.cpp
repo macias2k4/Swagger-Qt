@@ -113,7 +113,8 @@ void AnnotationFinder::_appendCurrentLineToAnnotationBlock ( ) {
     _currentLine = _currentLine.trimmed ( );
     _currentAnnotationBuffor.append ( _currentLine );
     if ( _isCurrentAnnotationBufforIsComplete ( ) ) {
-        qDebug ( ) << "annotation" << QJsonDocument::fromJson ( _currentAnnotationBuffor ).toJson ( );
+        emit foundAnnotation ( _currentAnnotationName,
+                               QJsonDocument::fromJson ( _currentAnnotationBuffor ).object ( ) );
     }
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

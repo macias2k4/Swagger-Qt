@@ -1,14 +1,16 @@
-#include "SwaggerAnnotationInterpreter.h"
+#include "SwaggerApi.h"
 
 namespace Swagger {
 namespace Core {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-SwaggerAnnotationInterpreter::SwaggerAnnotationInterpreter ( ) {
+SwaggerApi::SwaggerApi ( QObject *parent )
+    : QObject        ( parent ),
+      _swaggerFiller ( _swagger ) {
     _setConnections ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-SwaggerAnnotationInterpreter::~SwaggerAnnotationInterpreter ( ) {
+SwaggerApi::~SwaggerApi ( ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -16,23 +18,24 @@ SwaggerAnnotationInterpreter::~SwaggerAnnotationInterpreter ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::_setConnections ( ) {
-
+void SwaggerApi::_setConnections ( ) {
+    connect ( &_annotationFinder, &AnnotationFinder::foundAnnotation,
+              &_swaggerFiller, &SwaggerFiller::fill );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::interprete ( ) {
+void SwaggerApi::interprete ( ) {
     _clearAllInterpreteVariables ( );
     if ( _isAllPropertySet ( ) ) {
         _startInterprete ( );
     }
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::_clearAllInterpreteVariables ( ) {
+void SwaggerApi::_clearAllInterpreteVariables ( ) {
     _lastErrorMessage = QString ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-bool SwaggerAnnotationInterpreter::_isAllPropertySet ( ) {
+bool SwaggerApi::_isAllPropertySet ( ) {
     if ( _sourceCodeFilesPath.isEmpty ( ) ) {
         _setLastErrorMessage ( "Path to source code files  is not set" );
         return false;
@@ -40,23 +43,23 @@ bool SwaggerAnnotationInterpreter::_isAllPropertySet ( ) {
     return true;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::_setLastErrorMessage ( const QString &message ) {
+void SwaggerApi::_setLastErrorMessage ( const QString &message ) {
     _lastErrorMessage = message;
     qWarning ( ) << _ModuleName << message;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::_startInterprete ( ) {
+void SwaggerApi::_startInterprete ( ) {
     _findAnnotations ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerAnnotationInterpreter::_findAnnotations ( ) {
+void SwaggerApi::_findAnnotations ( ) {
     _annotationFinder.setSourceCodeFilesPath ( _sourceCodeFilesPath );
     _annotationFinder.findAnnotations ( );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // - property
-void SwaggerAnnotationInterpreter::setSourceCodeFilesPath ( const QString &sourceCodeFilesPath ) {
+void SwaggerApi::setSourceCodeFilesPath ( const QString &sourceCodeFilesPath ) {
     _sourceCodeFilesPath = sourceCodeFilesPath;
 }
 

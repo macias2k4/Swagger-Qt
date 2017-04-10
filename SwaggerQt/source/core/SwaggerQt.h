@@ -29,7 +29,7 @@ public:
     /// "@Swg.Swagger" {
     ///     "host" : "192.168.200.57",
     ///     "basePath" : "/pxvs",
-    ///     "schemas" : ["http"],
+    ///     "schemes" : ["http", "https"],
     ///     "@Swg.Info" : {
     ///         "title" : "PxVS Web Methods server"
     ///     },

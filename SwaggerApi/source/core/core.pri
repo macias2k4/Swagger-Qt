@@ -1,10 +1,12 @@
 ## source/logic/core
 
 HEADERS += \
-    $$PWD/SwaggerAnnotationInterpreter.h \
-    $$PWD/swaggerannotationinterpreter_global.h \
-    $$PWD/AnnotationFinder.h
+    $$PWD/SwaggerApi.h \
+    $$PWD/swaggerapi_global.h \
+    $$PWD/AnnotationFinder.h \
+    $$PWD/SwaggerFiller.h
 
 SOURCES += \
-    $$PWD/SwaggerAnnotationInterpreter.cpp \
-    $$PWD/AnnotationFinder.cpp
+    $$PWD/SwaggerApi.cpp \
+    $$PWD/AnnotationFinder.cpp \
+    $$PWD/SwaggerFiller.cpp

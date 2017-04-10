@@ -12,6 +12,7 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Qt
 #include <QObject>
+#include <QDebug>
 
 namespace Swagger {
 namespace Base {
@@ -27,8 +28,6 @@ public:
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
-    /// \brief fieldName -> return name of field implementing by derivative class
-    virtual QString fieldName ( ) const = 0;
 
     // - property
     /// \brief AnnotationKeyword -> swagger annotation keyword

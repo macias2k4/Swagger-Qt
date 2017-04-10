@@ -1,8 +1,7 @@
 /**
   * \file     AnnotationFinder.h
   * \author   m.lamparski
-  * \date     2017-04-06 -> $Date$
-  * \version  $Revision$
+  * \date     2017-04-06
   * \brief    File with class to search annotation in source code files
 
 */
@@ -46,6 +45,8 @@ public:
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals
+    /// \brief foundAnnotation -> send found annotation with content
+    void foundAnnotation ( const QString &annotationName, const QJsonObject &annotationContent );
 
 public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -76,8 +77,6 @@ private:
     QString _commentSigns = QString ( );
     /// \brief _commentSigns -> name of current annotation
     QString _currentAnnotationName = QString ( );
-
-
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
