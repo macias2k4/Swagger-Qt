@@ -26,12 +26,15 @@ class SwaggerQt : public QObject {
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    /// "@Swg.Swagger" {
+    /// "@Swg.Swagger" : {
     ///     "host" : "192.168.200.57",
     ///     "basePath" : "/pxvs",
     ///     "schemes" : ["http", "https"],
     ///     "@Swg.Info" : {
-    ///         "title" : "PxVS Web Methods server"
+    ///         "title" : "PxVS Web Methods server",
+    ///         "description" : "Web Methods",
+    ///         "termsOfService" : "test",
+    ///         "version" : "1.0.0"
     ///     },
     ///     "produces" : ["application/json"],
     ///     "@Swg.Paths" : {
@@ -39,6 +42,12 @@ public:
     ///     }
     /// }
     explicit SwaggerQt ( QObject *parent = 0 );
+    /// "@Swg.Info" : {
+    ///         "title" : "PxVS Web Methods server 1",
+    ///         "description" : "Web Methods 1",
+    ///         "termsOfService" : "test",
+    ///         "version" : "1.0.0"
+    ///     }
     ~SwaggerQt ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //

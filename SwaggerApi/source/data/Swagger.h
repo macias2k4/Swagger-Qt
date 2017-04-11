@@ -10,12 +10,10 @@
 #define SWAGGER_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-// Qt
-#include <QObject>
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
 #include <SwaggerFieldBase.h>
+
+#include <InfoField.h>
 
 namespace Swagger {
 namespace Data {
@@ -40,6 +38,8 @@ public:
 
     // - property
 
+    InfoField &infoField ( );
+
     QString host ( ) const;
     void setHost ( QString host );
 
@@ -54,6 +54,7 @@ public:
 
     QStringList produces ( ) const;
     void setProduces ( QStringList produces );
+
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -74,7 +75,8 @@ private:
     // property
     /// \brief _swagger -> Required. Specifies the Swagger Specification version being used  (2.0)
     QString _swagger = "2.0";
-    // InfoField ? InfoObject ->
+    /// \brief _infoField -> Required. Provides metadata about the API
+    InfoField _infoField;
     /// \brief _host -> The host (name or ip) serving the AP
     QString _host = QString ( );
     /// \brief _basePath -> The base path on which the API is served, which is relative to the host

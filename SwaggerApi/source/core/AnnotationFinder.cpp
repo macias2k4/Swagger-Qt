@@ -100,11 +100,11 @@ void AnnotationFinder::_extractCommentSignsFromCurrentLine ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void AnnotationFinder::_extractAnnotationNameFromCurrentLine ( ) {
     int indexOfAnnotation =  _currentLine.indexOf ( Swagger::Base::SwaggerFieldBase::AnnotationKeyword );
-    int indexOfJson = _currentLine.indexOf ( '{', indexOfAnnotation );
+    int indexOfJson = _currentLine.indexOf ( ':', indexOfAnnotation );
     _currentAnnotationName = _currentLine.mid ( indexOfAnnotation, indexOfJson - indexOfAnnotation );
     _currentAnnotationName.remove ( "\"" );
     _currentAnnotationName = _currentAnnotationName.trimmed ( );
-    _currentLine.remove ( indexOfAnnotation - 1, indexOfJson - indexOfAnnotation + 1 );
+    _currentLine.remove ( indexOfAnnotation - 1, indexOfJson - indexOfAnnotation + 2 );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void AnnotationFinder::_appendCurrentLineToAnnotationBlock ( ) {
@@ -115,6 +115,9 @@ void AnnotationFinder::_appendCurrentLineToAnnotationBlock ( ) {
     if ( _isCurrentAnnotationBufforIsComplete ( ) ) {
         emit foundAnnotation ( _currentAnnotationName,
                                QJsonDocument::fromJson ( _currentAnnotationBuffor ).object ( ) );
+        _isAnnotationBlockStarted = false;
+        _currentAnnotationName = QString ( );
+        _currentAnnotationBuffor.clear ( );
     }
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
