@@ -36,6 +36,9 @@ public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
 
+    /// \brief isFieldAlreadySet -> return information is Swagger field properties already set
+    bool isFieldAlreadySet ( ) const;
+
     // - property
 
     InfoField &infoField ( );

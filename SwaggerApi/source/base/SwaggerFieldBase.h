@@ -33,6 +33,9 @@ public:
     /// \brief AnnotationKeyword -> swagger annotation keyword
     static const QString AnnotationKeyword;
 
+    /// \brief isFieldAlreadySet -> return information is field properties already set
+    virtual bool isFieldAlreadySet ( ) const = 0;
+
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals

@@ -46,7 +46,7 @@ signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals
     /// \brief foundAnnotation -> send found annotation with content
-    void foundAnnotation ( const QString &annotationName, const QJsonObject &annotationContent );
+    void foundAnnotation ( const QString &annotationName, const QJsonValue &annotationContent );
 
 public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //

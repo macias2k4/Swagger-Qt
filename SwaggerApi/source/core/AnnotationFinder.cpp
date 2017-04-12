@@ -113,6 +113,8 @@ void AnnotationFinder::_appendCurrentLineToAnnotationBlock ( ) {
     _currentLine = _currentLine.trimmed ( );
     _currentAnnotationBuffor.append ( _currentLine );
     if ( _isCurrentAnnotationBufforIsComplete ( ) ) {
+        qInfo ( ) << "Found annotation" << _currentAnnotationName << "in file" <<
+                  _currentSourceCodeFileInfo.fileName ( );
         emit foundAnnotation ( _currentAnnotationName,
                                QJsonDocument::fromJson ( _currentAnnotationBuffor ).object ( ) );
         _isAnnotationBlockStarted = false;

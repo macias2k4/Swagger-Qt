@@ -26,7 +26,7 @@ namespace Core {
 /// \brief SwaggerFiller -> class to fill Swagger object by annotations from source code files
 class SwaggerFiller : public QObject {
     Q_OBJECT
-    Q_PROPERTY ( QJsonObject Swagger READ swagger WRITE setSwagger )
+    Q_PROPERTY ( QJsonValue Swagger READ swagger WRITE setSwagger )
     Q_PROPERTY ( QJsonValue Info READ Info WRITE setInfo )
 
 public:
@@ -40,8 +40,8 @@ public:
 
     // - property
 
-    QJsonObject swagger ( ) const;
-    void setSwagger ( QJsonObject swagger );
+    QJsonValue swagger ( ) const;
+    void setSwagger ( QJsonValue swagger );
 
     QJsonValue Info ( ) const;
     void setInfo ( QJsonValue Info );
@@ -54,7 +54,7 @@ public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // slots
     /// \brief fill -> fill correct swagger field by annotationContent
-    void fill ( const QString &annotationName, const QJsonObject &annotationContent );
+    void fill ( const QString &annotationName, const QJsonValue &annotationContent );
 
 
 private:

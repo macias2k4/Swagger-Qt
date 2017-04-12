@@ -40,7 +40,6 @@ void SourceCodeFilesModel::_clearModel ( ) {
 // ───────────────────────────────────────────────────────────────────────────────────────────── //
 void SourceCodeFilesModel::_addCurrentSourceCodeFileToModel ( ) {
     if ( _isCurrentSourceCodeFileValid ( ) ) {
-        qDebug ( ) << _currentSourceCodeFile.filePath ( );
         _sourceCodeFiles.append ( _currentSourceCodeFile );
     }
 }

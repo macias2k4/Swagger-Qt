@@ -26,6 +26,9 @@ public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
 
+    /// \brief isFieldAlreadySet -> return information is Info field properties already set
+    bool isFieldAlreadySet ( ) const;
+
     // - property
 
     QString title ( ) const;

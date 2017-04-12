@@ -17,7 +17,7 @@ SwaggerFiller::~SwaggerFiller ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerFiller::fill ( const QString &annotationName, const QJsonObject &annotationContent ) {
+void SwaggerFiller::fill ( const QString &annotationName, const QJsonValue &annotationContent ) {
     // fill _swagger object fields by received annotationContent
     QString fieldName = _extractFieldNameFromAnnotationName ( annotationName );
     if ( fieldName.isEmpty ( ) ) {
@@ -43,12 +43,20 @@ void SwaggerFiller::_setLastErrorMessage ( const QString &message ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonObject SwaggerFiller::swagger ( ) const {
-    return QJsonObject ( );
+QJsonValue SwaggerFiller::swagger ( ) const {
+    return QJsonValue ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerFiller::setSwagger ( QJsonObject swagger ) {
-    _fillSwaggerField ( *_swagger, swagger );
+void SwaggerFiller::setSwagger ( QJsonValue swagger ) {
+    if ( !swagger.isObject ( ) ) {
+        _setLastErrorMessage ( "Can't set Swagger root object in parameter is not a QJsonObject" );
+        return;
+    }
+    if ( _swagger->isFieldAlreadySet ( ) ) {
+        _setLastErrorMessage ( "Can't set Swagger root field, it's already set" );
+        return;
+    }
+    _fillSwaggerField ( *_swagger, swagger.toObject ( ) );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
@@ -79,7 +87,11 @@ QJsonValue SwaggerFiller::Info ( ) const {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setInfo ( QJsonValue Info ) {
     if ( !Info.isObject ( ) ) {
-        _setLastErrorMessage ( "Can't set Info field, in parammeter is not a QJsonObject" );
+        _setLastErrorMessage ( "Can't set Info field, in parameter is not a QJsonObject" );
+        return;
+    }
+    if ( _swagger->infoField ( ).isFieldAlreadySet ( ) ) {
+        _setLastErrorMessage ( "Can't set Info field, it's already set" );
         return;
     }
     _fillSwaggerField ( _swagger->infoField ( ), Info.toObject ( ) );
