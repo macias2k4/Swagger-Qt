@@ -37,9 +37,6 @@ public:
     ///         "version" : "1.0.0"
     ///     },
     ///     "produces" : ["application/json"],
-    ///     "@Swg.Paths" : {
-    ///
-    ///     }
     /// }
     explicit SwaggerQt ( QObject *parent = 0 );
     /// "@Swg.Info" : {
