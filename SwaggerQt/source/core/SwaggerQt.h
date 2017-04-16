@@ -36,7 +36,7 @@ public:
     ///         "termsOfService" : "test",
     ///         "version" : "1.0.0"
     ///     },
-    ///     "produces" : ["application/json"],
+    ///     "produces" : ["application/json"]
     /// }
     explicit SwaggerQt ( QObject *parent = 0 );
     /// "@Swg.Info" : {
