@@ -28,6 +28,7 @@ class SwaggerFiller : public QObject {
     Q_OBJECT
     Q_PROPERTY ( QJsonValue Swagger READ swagger WRITE setSwagger )
     Q_PROPERTY ( QJsonValue Info READ Info WRITE setInfo )
+    Q_PROPERTY ( QJsonValue Get READ Get WRITE setGet )
 
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -46,6 +47,10 @@ public:
     QJsonValue Info ( ) const;
     void setInfo ( QJsonValue Info );
 
+    // -- operations
+    QJsonValue Get ( ) const;
+    void setGet ( QJsonValue Get );
+
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals
@@ -55,7 +60,6 @@ public slots:
     // slots
     /// \brief fill -> fill correct swagger field by annotationContent
     void fill ( const QString &annotationName, const QJsonValue &annotationContent );
-
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -77,6 +81,7 @@ private:
     /// \brief _fillSwaggerField -> fill swagger 'advanced' field
     void _fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
                              const QJsonObject &annotationContent );
+
 };
 
 

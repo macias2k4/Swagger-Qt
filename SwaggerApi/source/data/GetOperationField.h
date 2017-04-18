@@ -1,40 +1,27 @@
-/**
-  * \file     SwaggerFieldBase.h
-  * \author   m.lamparski
-  * \date     2017-04-05 -> $Date$
-  * \version  $Revision$
-  * \brief    File with base class for all Swagger Field Type objects
-
-*/
-#ifndef SWAGGERFIELDBASE_H
-#define SWAGGERFIELDBASE_H
+#ifndef GETOPERATIONFIELD_H
+#define GETOPERATIONFIELD_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-// Qt
-#include <QObject>
-#include <QDebug>
+// Swagger-Qt
+#include <OperationFieldBase.h>
 
 namespace Swagger {
-namespace Base {
+namespace Data {
 
-/// \brief The SwaggerFieldBase -> base class for all Swagger Field Type objects
-class SwaggerFieldBase : public QObject {
+/// \brief GetOperationField -> Get operation object
+class GetOperationField : public Base::OperationFieldBase {
     Q_OBJECT
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    explicit SwaggerFieldBase ( QObject *parent = 0 );
-    ~SwaggerFieldBase ( );
+    explicit GetOperationField ( QObject *parent = 0 );
+//    GetOperationField ( const GetOperationField &object );
+    ~GetOperationField ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
 
     // - property
-    /// \brief AnnotationKeyword -> swagger annotation keyword
-    static const QString AnnotationKeyword;
-
-    /// \brief isFieldAlreadySet -> return information is field properties already set
-    virtual bool isFieldAlreadySet ( ) const = 0;
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -44,14 +31,15 @@ public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // slots
 
-protected:
+private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
 
 };
 
-} // Base
+} // Data
 } // Swagger
 
+//Q_DECLARE_METATYPE ( Swagger::Data::GetOperationField )
 
-#endif // SWAGGERFIELDBASE_H
+#endif // GETOPERATIONFIELD_H

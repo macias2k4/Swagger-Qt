@@ -32,29 +32,30 @@ void SwaggerQt::setSourceCodeFilesPath ( const QString &sourceCodeFilesPath ) {
 ///         "application/json",
 ///         "application/xml"
 ///     ],
-///     "@Swg.Parameter" : {
+///     "@Swg.Parameters" : [ {
 ///         "name": "transportType",
 ///         "in": "path",
 ///         "description": "Type of transport (water, land)",
 ///         "required": false,
 ///         "type": "string"
-///     },
-///     "@Swg.Response" : {
-///         "stateCode" : "200",
-///         "description" : "Operation was successful",
-///         "@Swg.Schema" : {
-///             "type" : "array",
-///             "@Swg.Items" : {
-///                 "type" : "object",
-///                 "ref" : "#/definitions/Vehicle"
-///             }
-///         }
 ///     }
-///     "@Swg.Response" : {
-///         "stateCode" : "default",
-///         "description" : "Operation was failure",
-///         "@Swg.Schema" : {
-///             "ref" : "#/definitions/Exception"
+///     ],
+///     "@Swg.Responses" : {
+///         "200" : {
+///             "description" : "Operation was successful",
+///             "@Swg.Schema" : {
+///                 "type" : "array",
+///                 "@Swg.Items" : {
+///                     "type" : "object",
+///                     "ref" : "#/definitions/Vehicle"
+///                 }
+///             }
+///         },
+///         "default" : {
+///             "description" : "Operation was failure",
+///             "@Swg.Schema" : {
+///                 "ref" : "#/definitions/Exception"
+///             }
 ///         }
 ///     }
 /// }

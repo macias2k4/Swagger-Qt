@@ -4,7 +4,8 @@ namespace Swagger {
 namespace Base {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-SwaggerFieldBase::SwaggerFieldBase ( QObject *parent ) : QObject ( parent ) {
+SwaggerFieldBase::SwaggerFieldBase ( QObject *parent )
+    : QObject ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 SwaggerFieldBase::~SwaggerFieldBase ( ) {

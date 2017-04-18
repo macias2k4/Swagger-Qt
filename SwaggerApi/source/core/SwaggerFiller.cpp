@@ -75,7 +75,14 @@ void SwaggerFiller::_fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
                 swaggerField.setProperty ( key.toLatin1 ( ).data ( ), value );
             }
         } else {
-            this->setProperty ( fieldName.toLatin1 ( ).data ( ), value );
+            if ( swaggerField.property ( fieldName.toLatin1 ( ).data ( ) ).canConvert
+                    < Swagger::Base::SwaggerFieldBase* > ( ) ) {
+                if ( value.isObject ( ) ) {
+                    _fillSwaggerField ( *swaggerField.property ( fieldName.toLatin1 ( ).data ( ) ).value < Swagger::Base::SwaggerFieldBase* > ( ), value.toObject ( ) );
+                } else if ( value.isArray ( ) ) {
+                    //                _fillSwaggerField ( property, value.toArray ( ) );
+                }
+            }
         }
     }
 }
@@ -90,11 +97,26 @@ void SwaggerFiller::setInfo ( QJsonValue Info ) {
         _setLastErrorMessage ( "Can't set Info field, in parameter is not a QJsonObject" );
         return;
     }
-    if ( _swagger->infoField ( ).isFieldAlreadySet ( ) ) {
+    if ( _swagger->info ( )->isFieldAlreadySet ( ) ) {
         _setLastErrorMessage ( "Can't set Info field, it's already set" );
         return;
     }
-    _fillSwaggerField ( _swagger->infoField ( ), Info.toObject ( ) );
+    _fillSwaggerField ( *_swagger->info ( ), Info.toObject ( ) );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QJsonValue SwaggerFiller::Get ( ) const {
+    return QJsonValue ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::setGet ( QJsonValue Get ) {
+    if ( !Get.isObject ( ) ) {
+        _setLastErrorMessage ( "Can't set Get field, in parameter is not a QJsonObject" );
+        return;
+    }
+
+    //    _swagger->addOperation ( );
+    //    _fillSwaggerField ( _swagger->lastAddOperation ( ), Get.toObject ( ) );
 }
 
 } // Core

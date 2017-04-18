@@ -21,10 +21,12 @@ public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
     explicit InfoField ( QObject *parent = 0 );
+    InfoField ( const InfoField &object );
     ~InfoField ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
+    InfoField &operator = ( const InfoField &object );
 
     /// \brief isFieldAlreadySet -> return information is Info field properties already set
     bool isFieldAlreadySet ( ) const;
@@ -66,9 +68,17 @@ private:
     QString _termsOfService;
     /// \brief _version -> Required Provides the version of the application API
     QString _version;
+
+    // ────────────────────────────────────────────────────────────────────────────────────────── //
+    // methods
+    /// \brief cloneFrom -> make this as clone of passed object
+    void _cloneFrom ( const InfoField &object );
+
 };
 
 } // Data
 } // Swagger
+
+Q_DECLARE_METATYPE ( Swagger::Data::InfoField )
 
 #endif // INFOFIELD_H

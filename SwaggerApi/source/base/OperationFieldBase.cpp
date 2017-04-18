@@ -1,15 +1,14 @@
-#include "Swagger.h"
+#include "OperationFieldBase.h"
 
 namespace Swagger {
-namespace Data {
+namespace Base {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-Swagger::Swagger ( QObject *parent )
-    : Base::SwaggerFieldBase ( parent ) {
-    _registerMetaTypes ( );
+OperationFieldBase::OperationFieldBase ( QObject *parent )
+    : SwaggerFieldBase ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-Swagger::~Swagger ( ) {
+OperationFieldBase::~OperationFieldBase ( ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -17,107 +16,109 @@ Swagger::~Swagger ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::_registerMetaTypes ( ) {
-    qRegisterMetaType < InfoField > ( );
-}
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-bool Swagger::isFieldAlreadySet ( ) const {
-    return !_host.isEmpty ( ) && !_basePath.isEmpty ( );
-}
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-// - property
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-InfoField *Swagger::info ( ) {
-    return &_info;
+// property
+QStringList OperationFieldBase::tags ( ) const {
+    return _tags;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setInfo ( InfoField *info ) {
-    _info = *info;
-}
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString Swagger::host ( ) const {
-    return _host;
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setHost ( QString host ) {
-    if ( _host == host ) {
+void OperationFieldBase::setTags ( QStringList tags ) {
+    if ( _tags == tags ) {
         return;
     }
-    _host = host;
-    emit hostChanged ( host );
+    _tags = tags;
+    emit tagsChanged ( tags );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString Swagger::basePath ( ) const {
-    return _basePath;
+QString OperationFieldBase::summary ( ) const {
+    return _summary;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setBasePath ( QString basePath ) {
-    if ( _basePath == basePath ) {
+void OperationFieldBase::setSummary ( QString summary ) {
+    if ( _summary == summary ) {
         return;
     }
-    _basePath = basePath;
-    emit basePathChanged ( basePath );
+    _summary = summary;
+    emit summaryChanged ( summary );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QStringList Swagger::schemes ( ) const {
-    return _schemes;
+QString OperationFieldBase::description ( ) const {
+    return _description;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setSchemes ( QStringList schemes ) {
-    if ( _schemes == schemes ) {
+void OperationFieldBase::setDescription ( QString description ) {
+    if ( _description == description ) {
         return;
     }
-    _schemes.clear ( );
-    for ( QString scheme : schemes ) {
-        if ( _acceptableSchemes.contains ( scheme ) ) {
-            _schemes.append ( scheme );
-        } else {
-            qWarning ( ) << "Skip schema" << scheme << ". It not contain in acceptable schemes";
-        }
-    }
-    emit schemesChanged ( _schemes );
+    _description = description;
+    emit descriptionChanged ( description );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QStringList Swagger::consumes ( ) const {
+QString OperationFieldBase::operationId ( ) const {
+    return _operationId;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setOperationId ( QString operationId ) {
+    if ( _operationId == operationId ) {
+        return;
+    }
+    _operationId = operationId;
+    emit operationIdChanged ( operationId );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QStringList OperationFieldBase::consumes ( ) const {
     return _consumes;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setConsumes ( QStringList consumes ) {
+void OperationFieldBase::setConsumes ( QStringList consumes ) {
     if ( _consumes == consumes ) {
         return;
     }
-    _consumes.clear ( );
-    for ( QString consume : consumes ) {
-        _consumes.append ( consume );
-    }
+    _consumes = consumes;
     emit consumesChanged ( consumes );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QStringList Swagger::produces ( ) const {
+QStringList OperationFieldBase::produces ( ) const {
     return _produces;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void Swagger::setProduces ( QStringList produces ) {
+void OperationFieldBase::setProduces ( QStringList produces ) {
     if ( _produces == produces ) {
         return;
     }
-    _produces.clear ( );
-    for ( QString produce : produces ) {
-        _produces.append ( produce );
-    }
+    _produces = produces;
     emit producesChanged ( produces );
 }
 
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QStringList OperationFieldBase::schemes ( ) const {
+    return _schemes;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setSchemes ( QStringList schemes ) {
+    if ( _schemes == schemes ) {
+        return;
+    }
+    _schemes = schemes;
+    emit schemesChanged ( schemes );
+}
 
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+bool OperationFieldBase::deprecated ( ) const {
+    return _deprecated;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setDeprecated ( bool deprecated ) {
+    if ( _deprecated == deprecated ) {
+        return;
+    }
+    _deprecated = deprecated;
+    emit deprecatedChanged ( deprecated );
+}
 
-
-} // Data
+} // Base
 } // Swagger

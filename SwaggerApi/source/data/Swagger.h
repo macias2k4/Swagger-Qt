@@ -12,8 +12,8 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
 #include <SwaggerFieldBase.h>
-
 #include <InfoField.h>
+#include <GetOperationField.h>
 
 namespace Swagger {
 namespace Data {
@@ -23,6 +23,7 @@ class Swagger : public Base::SwaggerFieldBase {
     Q_OBJECT
     Q_PROPERTY ( QString host READ host WRITE setHost NOTIFY hostChanged )
     Q_PROPERTY ( QString basePath READ basePath WRITE setBasePath NOTIFY basePathChanged )
+    Q_PROPERTY ( InfoField *Info READ info WRITE setInfo )
     Q_PROPERTY ( QStringList schemes READ schemes WRITE setSchemes NOTIFY schemesChanged )
     Q_PROPERTY ( QStringList consumes READ consumes WRITE setConsumes NOTIFY consumesChanged )
     Q_PROPERTY ( QStringList produces READ produces WRITE setProduces NOTIFY producesChanged )
@@ -40,8 +41,8 @@ public:
     bool isFieldAlreadySet ( ) const;
 
     // - property
-
-    InfoField &infoField ( );
+    InfoField *info ( );
+    void setInfo ( InfoField *info );
 
     QString host ( ) const;
     void setHost ( QString host );
@@ -58,6 +59,8 @@ public:
     QStringList produces ( ) const;
     void setProduces ( QStringList produces );
 
+//    /// \brief addOperation -> adding new operation object
+//    void addOperation ( Base::OperationFieldBase::OperationType operationType );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -73,13 +76,14 @@ public slots:
     // slots
 
 
+
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
     /// \brief _swagger -> Required. Specifies the Swagger Specification version being used  (2.0)
     QString _swagger = "2.0";
-    /// \brief _infoField -> Required. Provides metadata about the API
-    InfoField _infoField;
+    /// \brief _info -> Required. Provides metadata about the API
+    InfoField _info;
     /// \brief _host -> The host (name or ip) serving the AP
     QString _host = QString ( );
     /// \brief _basePath -> The base path on which the API is served, which is relative to the host
@@ -95,6 +99,13 @@ private:
     /// \brief _produces -> A list of MIME types the APIs can produce. This is global to all APIs
     /// but can be overridden on specific API calls
     QStringList _produces;
+    /// \brief _operations -> list of API operations
+    QList < Base::OperationFieldBase* > _operations;
+
+    // ────────────────────────────────────────────────────────────────────────────────────────── //
+    // methods
+    /// \brief _registerMetaTypes -> register all swagger fields class in meta types
+    void _registerMetaTypes ( );
 };
 
 } // Data
