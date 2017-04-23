@@ -20,6 +20,8 @@ public:
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
+    /// \brief operationType -> return type of operation
+    virtual Base::OperationFieldBase::OperationType operationType ( ) const override;
 
     // - property
 

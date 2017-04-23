@@ -15,5 +15,14 @@ GetOperationField::GetOperationField ( QObject *parent )
 GetOperationField::~GetOperationField ( ) {
 }
 
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+//                                       Methods & Slots                                          //
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+Base::OperationFieldBase::OperationType GetOperationField::operationType ( ) const {
+    return OperationType::Get;
+}
+
 } // Data
 } // Swagger

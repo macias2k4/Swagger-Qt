@@ -39,6 +39,8 @@ public:
 
     /// \brief isFieldAlreadySet -> return information is Swagger field properties already set
     bool isFieldAlreadySet ( ) const;
+    /// \brief clear -> clear all fields of swagger object
+    void clear ( ) override;
 
     // - property
     InfoField *info ( );
@@ -59,8 +61,11 @@ public:
     QStringList produces ( ) const;
     void setProduces ( QStringList produces );
 
-//    /// \brief addOperation -> adding new operation object
-//    void addOperation ( Base::OperationFieldBase::OperationType operationType );
+    // -- operation
+    /// \brief isOperationAlreadyExist -> check is given operation already added in operations list
+    bool isOperationAlreadyExist ( Base::OperationFieldBase *operation );
+    /// \brief addOperation -> adding new operation object to list
+    void addOperation ( Base::OperationFieldBase *operation );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -81,7 +86,7 @@ private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
     /// \brief _swagger -> Required. Specifies the Swagger Specification version being used  (2.0)
-    QString _swagger = "2.0";
+    const QString _swagger = "2.0";
     /// \brief _info -> Required. Provides metadata about the API
     InfoField _info;
     /// \brief _host -> The host (name or ip) serving the AP
@@ -106,6 +111,8 @@ private:
     // methods
     /// \brief _registerMetaTypes -> register all swagger fields class in meta types
     void _registerMetaTypes ( );
+    /// \brief _clearOperations -> clear swagger operations
+    void _clearOperations ( );
 };
 
 } // Data

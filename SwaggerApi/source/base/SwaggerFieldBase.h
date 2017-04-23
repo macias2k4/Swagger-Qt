@@ -35,6 +35,8 @@ public:
 
     /// \brief isFieldAlreadySet -> return information is field properties already set
     virtual bool isFieldAlreadySet ( ) const = 0;
+    /// \brief clear -> clear properties of current field
+    virtual void clear ( ) = 0;
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //

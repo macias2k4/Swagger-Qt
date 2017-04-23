@@ -33,6 +33,7 @@ void SwaggerApi::interprete ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerApi::_clearAllInterpreteVariables ( ) {
     _lastErrorMessage = QString ( );
+    _swagger.clear ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 bool SwaggerApi::_isAllPropertySet ( ) {

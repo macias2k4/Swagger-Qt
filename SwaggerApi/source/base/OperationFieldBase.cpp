@@ -16,7 +16,38 @@ OperationFieldBase::~OperationFieldBase ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+bool OperationFieldBase::isFieldAlreadySet ( ) const {
+    return false;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::clear ( ) {
+    _path = QString ( );
+    _tags.clear ( );
+    _summary = QString ( );
+    _description = QString ( );
+    _operationId = QString ( );
+    _consumes.clear ( );
+    _produces.clear ( );
+    _schemes.clear ( );
+    _deprecated = false;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 // property
+QString OperationFieldBase::path ( ) const {
+    return _path;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setPath ( QString path ) {
+    if ( _path == path ) {
+        return;
+    }
+    _path = path;
+    emit pathChanged ( path );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 QStringList OperationFieldBase::tags ( ) const {
     return _tags;
 }

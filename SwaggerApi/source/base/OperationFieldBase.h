@@ -18,6 +18,7 @@ namespace Base {
 /// \brief The OperationFieldBase -> base class for all Swagger Operation Field Type objects
 class OperationFieldBase : public SwaggerFieldBase {
     Q_OBJECT
+    Q_PROPERTY ( QString path READ path WRITE setPath NOTIFY pathChanged )
     Q_PROPERTY ( QStringList tags READ tags WRITE setTags NOTIFY tagsChanged )
     Q_PROPERTY ( QString summary READ summary WRITE setSummary NOTIFY summaryChanged )
     Q_PROPERTY ( QString description READ description WRITE setDescription NOTIFY descriptionChanged )
@@ -41,33 +42,44 @@ public:
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
+    /// \brief isFieldAlreadySet -> implementing virtual method of SwaggerFieldBase
+    bool isFieldAlreadySet ( ) const override;
+
+    /// \brief operationType -> return type of operation
+    virtual Base::OperationFieldBase::OperationType operationType ( ) const = 0;
+    /// \brief clear -> clear properties of current field
+    virtual void clear ( ) override;
 
     // - property
 
-    QStringList tags() const;
+    QString path ( ) const;
+    void setPath ( QString path );
+
+    QStringList tags ( ) const;
     void setTags ( QStringList tags );
 
-    QString summary() const;
+    QString summary ( ) const;
     void setSummary ( QString summary );
 
-    QString description() const;
+    QString description ( ) const;
     void setDescription ( QString description );
 
 
-    QString operationId() const;
+    QString operationId ( ) const;
     void setOperationId ( QString operationId );
 
-    QStringList consumes() const;
+    QStringList consumes ( ) const;
     void setConsumes ( QStringList consumes );
 
-    QStringList produces() const;
+    QStringList produces ( ) const;
     void setProduces ( QStringList produces );
 
-    QStringList schemes() const;
+    QStringList schemes ( ) const;
     void setSchemes ( QStringList schemes );
 
-    bool deprecated() const;
+    bool deprecated ( ) const;
     void setDeprecated ( bool deprecated );
+
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -80,6 +92,7 @@ signals:
     void producesChanged ( QStringList produces );
     void schemesChanged ( QStringList schemes );
     void deprecatedChanged ( bool deprecated );
+    void pathChanged ( QString path );
 
 public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -89,6 +102,8 @@ public slots:
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
+    /// \brief _path -> A path on which API is serving this operation
+    QString _path = QString ( );
     /// \brief _tags -> A list of tags for API documentation control. Grouping operations
     QStringList _tags;
     /// \brief _summary -> A short summary of what the operation does. Max 120 characters

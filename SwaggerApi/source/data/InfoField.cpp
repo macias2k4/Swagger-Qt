@@ -41,6 +41,14 @@ bool InfoField::isFieldAlreadySet ( ) const {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+void InfoField::clear ( ) {
+    _title = QString ( );
+    _description = QString ( );
+    _termsOfService = QString ( );
+    _version = QString ( );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 QString InfoField::title ( ) const {
     return _title;
 }

@@ -49,7 +49,7 @@ QJsonValue SwaggerFiller::swagger ( ) const {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setSwagger ( QJsonValue swagger ) {
     if ( !swagger.isObject ( ) ) {
-        _setLastErrorMessage ( "Can't set Swagger root object in parameter is not a QJsonObject" );
+        _setLastErrorMessage ( "Can't set Swagger root object input parameter is not a QJsonObject" );
         return;
     }
     if ( _swagger->isFieldAlreadySet ( ) ) {
@@ -94,7 +94,7 @@ QJsonValue SwaggerFiller::Info ( ) const {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setInfo ( QJsonValue Info ) {
     if ( !Info.isObject ( ) ) {
-        _setLastErrorMessage ( "Can't set Info field, in parameter is not a QJsonObject" );
+        _setLastErrorMessage ( "Can't set Info field, input parameter is not a QJsonObject" );
         return;
     }
     if ( _swagger->info ( )->isFieldAlreadySet ( ) ) {
@@ -105,18 +105,23 @@ void SwaggerFiller::setInfo ( QJsonValue Info ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonValue SwaggerFiller::Get ( ) const {
+QJsonValue SwaggerFiller::get ( ) const {
     return QJsonValue ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setGet ( QJsonValue Get ) {
     if ( !Get.isObject ( ) ) {
-        _setLastErrorMessage ( "Can't set Get field, in parameter is not a QJsonObject" );
+        _setLastErrorMessage ( "Can't set Get field, input parameter is not a QJsonObject" );
         return;
     }
-
-    //    _swagger->addOperation ( );
-    //    _fillSwaggerField ( _swagger->lastAddOperation ( ), Get.toObject ( ) );
+    Data::GetOperationField *getOperation = new Data::GetOperationField ( );
+    _fillSwaggerField ( *getOperation, Get.toObject ( ) );
+    if ( _swagger->isOperationAlreadyExist ( getOperation ) ) {
+        _setLastErrorMessage ( "Can't add Get operation, it's already exist" );
+        delete getOperation;
+        return;
+    }
+    _swagger->addOperation ( getOperation );
 }
 
 } // Core

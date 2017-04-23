@@ -27,6 +27,23 @@ bool Swagger::isFieldAlreadySet ( ) const {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+void Swagger::clear ( ) {
+    _info.clear ( );
+    _host = QString ( );
+    _basePath = QString ( );
+    _schemes.clear ( );
+    _consumes.clear ( );
+    _produces.clear ( );
+    _clearOperations ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void Swagger::_clearOperations ( ) {
+    while ( !_operations.isEmpty ( ) ) {
+        delete _operations.takeFirst ( );
+    }
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 // - property
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -116,8 +133,33 @@ void Swagger::setProduces ( QStringList produces ) {
     emit producesChanged ( produces );
 }
 
-
-
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+// operations
+bool Swagger::isOperationAlreadyExist ( Base::OperationFieldBase *operation ) {
+    if ( !operation ) {
+        return false;
+    }
+    for ( Base::OperationFieldBase *addedOpearion : _operations ) {
+        if ( addedOpearion && ( addedOpearion->operationType ( ) == operation->operationType ( ) )
+                && ( addedOpearion->path ( ) == operation->path ( ) ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void Swagger::addOperation ( Base::OperationFieldBase *operation ) {
+    if ( !operation ) {
+        qWarning ( ) << "Can't add operation. Input object is null";
+        return;
+    }
+    if ( !operation->path ( ).startsWith ( "/" ) ) {
+        qWarning ( ) << "Can't add operation. Path of operation don't start with '/' sign (Path="
+                     << operation->path ( ) << ")";
+        return;
+    }
+    _operations.append ( operation );
+}
 
 } // Data
 } // Swagger

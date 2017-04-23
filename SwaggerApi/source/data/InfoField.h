@@ -30,6 +30,8 @@ public:
 
     /// \brief isFieldAlreadySet -> return information is Info field properties already set
     bool isFieldAlreadySet ( ) const;
+    /// \brief clear -> clear properties of current field
+    void clear ( ) override;
 
     // - property
 
@@ -61,13 +63,13 @@ private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
     /// \brief _title -> Required. The title of the application.
-    QString _title;
+    QString _title = QString ( );
     /// \brief _description -> A short description of the application
-    QString _description;
+    QString _description = QString ( );
     /// \brief _termsOfService -> The Terms of Service for the API
-    QString _termsOfService;
+    QString _termsOfService = QString ( );
     /// \brief _version -> Required Provides the version of the application API
-    QString _version;
+    QString _version = QString ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
