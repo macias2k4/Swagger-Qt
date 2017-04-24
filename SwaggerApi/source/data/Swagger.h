@@ -1,8 +1,7 @@
 /**
   * \file     SwaggerObject.h
   * \author   m.lamparski
-  * \date     2017-04-05 -> $Date$
-  * \version  $Revision$
+  * \date     2017-04-05
   * \brief    File with root object of swagger document
 
 */

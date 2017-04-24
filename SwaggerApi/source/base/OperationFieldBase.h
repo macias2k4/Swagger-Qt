@@ -11,6 +11,7 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger
 #include <SwaggerFieldBase.h>
+#include <ParameterDefaultField.h>
 
 namespace Swagger {
 namespace Base {
