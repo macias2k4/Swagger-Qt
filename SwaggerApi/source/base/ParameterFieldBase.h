@@ -16,7 +16,7 @@ namespace Swagger {
 namespace Base {
 
 /// \brief ParameterFieldBase -> base class for parameter object, it can by use in Operation
-class ParameterFieldBase : Base::SwaggerFieldBase {
+class ParameterFieldBase : public Base::SwaggerFieldBase {
     Q_OBJECT
     Q_PROPERTY ( QString name READ name WRITE setName NOTIFY nameChanged )
     Q_PROPERTY ( QString in READ in WRITE setIn NOTIFY inChanged )
@@ -33,7 +33,7 @@ public:
     // methods
 
     /// \brief clear -> clear properties of current field
-    virtual void clear ( ) override;
+    void clear ( ) override;
 
     // - property
 

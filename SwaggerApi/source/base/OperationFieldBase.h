@@ -11,7 +11,6 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger
 #include <SwaggerFieldBase.h>
-#include <ParameterDefaultField.h>
 
 namespace Swagger {
 namespace Base {
@@ -26,6 +25,7 @@ class OperationFieldBase : public SwaggerFieldBase {
     Q_PROPERTY ( QString operationId READ operationId WRITE setOperationId NOTIFY operationIdChanged )
     Q_PROPERTY ( QStringList consumes READ consumes WRITE setConsumes NOTIFY consumesChanged )
     Q_PROPERTY ( QStringList produces READ produces WRITE setProduces NOTIFY producesChanged )
+    Q_PROPERTY ( QJsonValue Parameters READ parameters WRITE setParameters NOTIFY setParametersDetected )
     Q_PROPERTY ( QStringList schemes READ schemes WRITE setSchemes NOTIFY schemesChanged )
     Q_PROPERTY ( bool deprecated READ deprecated WRITE setDeprecated NOTIFY deprecatedChanged )
 
@@ -65,7 +65,6 @@ public:
     QString description ( ) const;
     void setDescription ( QString description );
 
-
     QString operationId ( ) const;
     void setOperationId ( QString operationId );
 
@@ -74,6 +73,9 @@ public:
 
     QStringList produces ( ) const;
     void setProduces ( QStringList produces );
+
+    QJsonValue parameters ( ) const;
+    void setParameters ( QJsonValue parameters );
 
     QStringList schemes ( ) const;
     void setSchemes ( QStringList schemes );
@@ -91,6 +93,7 @@ signals:
     void operationIdChanged ( QString operationId );
     void consumesChanged ( QStringList consumes );
     void producesChanged ( QStringList produces );
+    void setParametersDetected ( QJsonValue parameters );
     void schemesChanged ( QStringList schemes );
     void deprecatedChanged ( bool deprecated );
     void pathChanged ( QString path );

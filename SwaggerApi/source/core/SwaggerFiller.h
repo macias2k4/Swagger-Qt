@@ -19,6 +19,7 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
 #include <Swagger.h>
+#include <ParameterDefaultField.h>
 
 namespace Swagger {
 namespace Core {
@@ -60,6 +61,10 @@ public slots:
     // slots
     /// \brief fill -> fill correct swagger field by annotationContent
     void fill ( const QString &annotationName, const QJsonValue &annotationContent );
+
+private slots:
+    /// \brief _addOperationParameters -> adding parameters objects to operation object (sender)
+    void _addOperationParameters ( QJsonValue parameters );
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //

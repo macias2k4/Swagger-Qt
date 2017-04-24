@@ -76,12 +76,15 @@ void SwaggerFiller::_fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
             }
         } else {
             if ( swaggerField.property ( fieldName.toLatin1 ( ).data ( ) ).canConvert
-                    < Swagger::Base::SwaggerFieldBase* > ( ) ) {
+                    < Swagger::Base::SwaggerFieldBase * > ( ) ) {
                 if ( value.isObject ( ) ) {
-                    _fillSwaggerField ( *swaggerField.property ( fieldName.toLatin1 ( ).data ( ) ).value < Swagger::Base::SwaggerFieldBase* > ( ), value.toObject ( ) );
+                    _fillSwaggerField ( *swaggerField.property ( fieldName.toLatin1 ( ).data ( ) ).value
+                                        < Swagger::Base::SwaggerFieldBase * > ( ), value.toObject ( ) );
                 } else if ( value.isArray ( ) ) {
                     //                _fillSwaggerField ( property, value.toArray ( ) );
                 }
+            } else {
+                swaggerField.setProperty ( fieldName.toLatin1 ( ).data ( ), value );
             }
         }
     }
@@ -115,6 +118,8 @@ void SwaggerFiller::setGet ( QJsonValue Get ) {
         return;
     }
     Data::GetOperationField *getOperation = new Data::GetOperationField ( );
+    connect ( getOperation, &Data::GetOperationField::setParametersDetected,
+              this, &SwaggerFiller::_addOperationParameters );
     _fillSwaggerField ( *getOperation, Get.toObject ( ) );
     if ( _swagger->isOperationAlreadyExist ( getOperation ) ) {
         _setLastErrorMessage ( "Can't add Get operation, it's already exist" );
@@ -122,6 +127,32 @@ void SwaggerFiller::setGet ( QJsonValue Get ) {
         return;
     }
     _swagger->addOperation ( getOperation );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addOperationParameters ( QJsonValue parameters ) {
+    Base::OperationFieldBase *operation = reinterpret_cast < Base::OperationFieldBase * > ( sender ( ) );
+    if ( !operation ) {
+        qWarning ( ) << "Can't add parameters to operation. Sender is not operation object";
+        return;
+    }
+    if ( !parameters.isArray ( ) ) {
+        qWarning ( ) << "Can't add parameters to operation. Parameters input is not an array";
+        return;
+    }
+    // ClearCode - to sub methods
+    for ( QJsonValue parameterValue : parameters.toArray ( ) ) {
+        if ( parameterValue.isObject ( ) ) {
+            QJsonObject parameter = parameterValue.toObject ( );
+            QString in = parameter.value ( "in" ).toString ( );
+            if ( in != "body" ) {
+                Data::ParameterDefaultField *parameterField = new Data::ParameterDefaultField ( );
+                _fillSwaggerField ( *parameterField, parameter );
+                // append new created object to list in 'operation'
+            }
+
+        }
+    }
+
 }
 
 } // Core

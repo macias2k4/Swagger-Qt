@@ -13,6 +13,7 @@
 // Qt
 #include <QObject>
 #include <QDebug>
+#include <QJsonValue>
 
 namespace Swagger {
 namespace Base {

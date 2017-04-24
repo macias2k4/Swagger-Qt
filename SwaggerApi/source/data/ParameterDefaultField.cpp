@@ -5,7 +5,7 @@ namespace Data {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 ParameterDefaultField::ParameterDefaultField ( QObject *parent )
-    : ParameterFieldBase ( parent ) {
+    : Swagger::Base::ParameterFieldBase ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 ParameterDefaultField::~ParameterDefaultField ( ) {
@@ -22,6 +22,21 @@ bool ParameterDefaultField::isFieldAlreadySet ( ) const {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void ParameterDefaultField::clear ( ) {
     ParameterFieldBase::clear ( );
+    _type = QString ( );
+    _format = QString ( );
+    _allowEmptyValue = false;
+    _collectionFormat = _acceptableCollectionFormat [ 0 ];
+    _maximum = 0;
+    _exclusiveMaximum = true;
+    _minimum = 0;
+    _exclusiveMinimum = true;
+    _maxLength = 0;
+    _minLength = 0;
+    _pattern = QString ( );
+    _maxItems = 0;
+    _minItems = 0;
+    _uniqueItems = false;
+    _multipleOf = 0;
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

@@ -126,6 +126,15 @@ void OperationFieldBase::setProduces ( QStringList produces ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+QJsonValue OperationFieldBase::parameters ( ) const {
+    return QJsonValue ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setParameters ( QJsonValue parameters ) {
+    emit setParametersDetected ( parameters );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 QStringList OperationFieldBase::schemes ( ) const {
     return _schemes;
 }

@@ -16,7 +16,7 @@ namespace Swagger {
 namespace Data {
 
 /// \brief ParameterDefaultField -> Parameter object, with 'in' field value oder then 'body'
-class ParameterDefaultField : Base::ParameterFieldBase {
+class ParameterDefaultField : public Base::ParameterFieldBase {
     Q_OBJECT
     Q_PROPERTY ( QString type READ type WRITE setType NOTIFY typeChanged )
     Q_PROPERTY ( QString format READ format WRITE setFormat NOTIFY formatChanged )
@@ -128,18 +128,18 @@ public slots:
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
-    /// \brief _type -> Required. The type of the parameter
-    QString _type = QString ( );
     /// \brief _acceptableType -> Possible values for _type property
     QStringList _acceptableType = { "string", "number", "integer", "boolean", "array", "file" };
+    /// \brief _type -> Required. The type of the parameter
+    QString _type = QString ( );
     /// \brief _format -> The extending format for the previously mentioned type
     QString _format = QString ( );
     /// \brief _allowEmptyValue -> Sets the ability to pass empty-valued parameters
     bool _allowEmptyValue = false;
-    /// \brief _collectionFormat -> Determines the format of the array if type array is used
-    QString _collectionFormat = "csv";
     /// \brief _acceptableCollectionFormat -> Possible values for _collectionFormat property
     QStringList _acceptableCollectionFormat = { "csv", "ssv", "tsv", "pipes", "multi" };
+    /// \brief _collectionFormat -> Determines the format of the array if type array is used
+    QString _collectionFormat = _acceptableCollectionFormat [ 0 ];
     /// \brief _maximum -> maximum value of parameter
     double _maximum = 0;
     /// \brief _exclusiveMaximum -> exclusive maximum value
@@ -162,6 +162,7 @@ private:
     bool _uniqueItems = false;
     /// \brief _multipleOf -> multiple of
     double _multipleOf = 0;
+
 };
 
 } // Data
