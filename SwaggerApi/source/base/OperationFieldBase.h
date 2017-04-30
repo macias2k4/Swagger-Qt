@@ -9,8 +9,13 @@
 #define OPERATIONFIELDBASE_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+// Qt
+#include <QMetaEnum>
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger
 #include <SwaggerFieldBase.h>
+#include <ParameterFieldBase.h>
 
 namespace Swagger {
 namespace Base {
@@ -25,7 +30,7 @@ class OperationFieldBase : public SwaggerFieldBase {
     Q_PROPERTY ( QString operationId READ operationId WRITE setOperationId NOTIFY operationIdChanged )
     Q_PROPERTY ( QStringList consumes READ consumes WRITE setConsumes NOTIFY consumesChanged )
     Q_PROPERTY ( QStringList produces READ produces WRITE setProduces NOTIFY producesChanged )
-    Q_PROPERTY ( QJsonValue Parameters READ parameters WRITE setParameters NOTIFY setParametersDetected )
+    Q_PROPERTY ( QJsonValue Parameters READ parametersJson WRITE setParametersJson NOTIFY setParametersDetected )
     Q_PROPERTY ( QStringList schemes READ schemes WRITE setSchemes NOTIFY schemesChanged )
     Q_PROPERTY ( bool deprecated READ deprecated WRITE setDeprecated NOTIFY deprecatedChanged )
 
@@ -35,6 +40,9 @@ public:
     enum class OperationType {
         Get
     };
+    Q_ENUM ( OperationType )
+    /// \brief operationTypeValueToString -> return enum value as string
+    static QString operationTypeValueToString ( OperationType value );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
@@ -74,8 +82,9 @@ public:
     QStringList produces ( ) const;
     void setProduces ( QStringList produces );
 
-    QJsonValue parameters ( ) const;
-    void setParameters ( QJsonValue parameters );
+    QJsonValue parametersJson ( ) const;
+    void setParametersJson ( QJsonValue parametersJson );
+    QList < Base::ParameterFieldBase * >  parameters ( ) const;
 
     QStringList schemes ( ) const;
     void setSchemes ( QStringList schemes );
@@ -83,6 +92,11 @@ public:
     bool deprecated ( ) const;
     void setDeprecated ( bool deprecated );
 
+    // -- operation
+    /// \brief isParameterAlreadyExist -> check is given parameter already added to this operation
+    bool isParameterAlreadyExist ( Base::ParameterFieldBase *parameter );
+    /// \brief addParameter -> adding new parameter object to list
+    void addParameter ( Base::ParameterFieldBase *parameter );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -93,7 +107,7 @@ signals:
     void operationIdChanged ( QString operationId );
     void consumesChanged ( QStringList consumes );
     void producesChanged ( QStringList produces );
-    void setParametersDetected ( QJsonValue parameters );
+    void setParametersDetected ( QJsonValue parametersJson );
     void schemesChanged ( QStringList schemes );
     void deprecatedChanged ( bool deprecated );
     void pathChanged ( QString path );
@@ -131,6 +145,8 @@ private:
     /// \brief _deprecated -> Declares this operation to be deprecated. Usage of the declared
     /// operation should be refrained. Default value is false
     bool _deprecated = false;
+    /// \brief _parameters -> list of operation parameters
+    QList < Base::ParameterFieldBase* > _parameters;
 
 };
 

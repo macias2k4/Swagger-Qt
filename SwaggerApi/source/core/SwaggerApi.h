@@ -19,6 +19,7 @@
 #include "swaggerapi_global.h"
 #include <AnnotationFinder.h>
 #include <SwaggerFiller.h>
+#include <SwaggerJsonSerializer.h>
 
 namespace Swagger {
 namespace Core {
@@ -65,6 +66,8 @@ private:
     Data::Swagger _swagger;
     /// \brief _swaggerFiller -> filler Swagger object by annotations
     SwaggerFiller _swaggerFiller;
+    /// \brief _swaggerJsonSerializer -> serializer swagger object to json object
+    SwaggerJsonSerializer _swaggerJsonSerializer;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -81,6 +84,10 @@ private:
     void _startInterprete ( );
     /// \brief _findAnnotations -> start to search annotiations in source files in set path
     void _findAnnotations ( );
+    /// \brief _serializeSwaggerToJson -> serialize swagger object to json object
+    void _serializeSwaggerToJson ( );
+    /// \brief _saveSwaggerJsonToFile -> saving created swagger json file on drive
+    void _saveSwaggerJsonToFile ( );
 
 };
 

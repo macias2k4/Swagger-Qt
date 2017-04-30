@@ -5,8 +5,9 @@ namespace Core {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 SwaggerApi::SwaggerApi ( QObject *parent )
-    : QObject        ( parent ),
-      _swaggerFiller ( _swagger ) {
+    : QObject                ( parent ),
+      _swaggerFiller         ( _swagger ),
+      _swaggerJsonSerializer ( _swagger ) {
     _setConnections ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -51,11 +52,26 @@ void SwaggerApi::_setLastErrorMessage ( const QString &message ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerApi::_startInterprete ( ) {
     _findAnnotations ( );
+    _serializeSwaggerToJson ( );
+    _saveSwaggerJsonToFile ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerApi::_findAnnotations ( ) {
     _annotationFinder.setSourceCodeFilesPath ( _sourceCodeFilesPath );
     _annotationFinder.findAnnotations ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerApi::_serializeSwaggerToJson ( ) {
+    _swaggerJsonSerializer.serialize ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerApi::_saveSwaggerJsonToFile ( ) {
+    QFile file ( "/media/lampart/data/projekty/source/Qt/QtSwagger.json" );
+    if ( !file.open ( QIODevice::ReadWrite ) ) {
+        qWarning ( ) << "Can't save swagger file" << file.fileName ( );
+    }
+    file.write ( QJsonDocument ( _swaggerJsonSerializer.swaggerJson ( ) ).toJson ( ) );
+    file.close ( );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

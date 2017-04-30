@@ -42,6 +42,8 @@ public:
     void clear ( ) override;
 
     // - property
+    QString swagger ( ) const;
+
     InfoField *info ( );
     void setInfo ( InfoField *info );
 
@@ -65,6 +67,8 @@ public:
     bool isOperationAlreadyExist ( Base::OperationFieldBase *operation );
     /// \brief addOperation -> adding new operation object to list
     void addOperation ( Base::OperationFieldBase *operation );
+    /// \brief operations -> return list of operations of API
+    QList < Base::OperationFieldBase * > operations ( ) const;
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -104,7 +108,7 @@ private:
     /// but can be overridden on specific API calls
     QStringList _produces;
     /// \brief _operations -> list of API operations
-    QList < Base::OperationFieldBase* > _operations;
+    QList < Base::OperationFieldBase * > _operations;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods

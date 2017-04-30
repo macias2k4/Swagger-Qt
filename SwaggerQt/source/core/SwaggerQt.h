@@ -26,6 +26,7 @@ class SwaggerQt : public QObject {
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
+
     /// "@Swg.Swagger" : {
     ///     "host" : "192.168.200.57",
     ///     "basePath" : "/pxvs",

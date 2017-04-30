@@ -16,6 +16,14 @@ OperationFieldBase::~OperationFieldBase ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString OperationFieldBase::operationTypeValueToString ( OperationFieldBase::OperationType value ) {
+    QMetaEnum metaEnum = OperationFieldBase::staticMetaObject.enumerator (
+                             OperationFieldBase::staticMetaObject.indexOfEnumerator ( "OperationType" ) );
+    return QString ( metaEnum.valueToKey ( static_cast < int > ( value ) ) );
+}
+
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 bool OperationFieldBase::isFieldAlreadySet ( ) const {
     return false;
 }
@@ -31,6 +39,9 @@ void OperationFieldBase::clear ( ) {
     _produces.clear ( );
     _schemes.clear ( );
     _deprecated = false;
+    while ( !_parameters.isEmpty ( ) ) {
+        delete _parameters.takeFirst ( );
+    }
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -126,12 +137,16 @@ void OperationFieldBase::setProduces ( QStringList produces ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonValue OperationFieldBase::parameters ( ) const {
+QJsonValue OperationFieldBase::parametersJson ( ) const {
     return QJsonValue ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void OperationFieldBase::setParameters ( QJsonValue parameters ) {
+void OperationFieldBase::setParametersJson ( QJsonValue parameters ) {
     emit setParametersDetected ( parameters );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QList<Base::ParameterFieldBase *> OperationFieldBase::parameters ( ) const {
+    return _parameters;
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -158,6 +173,31 @@ void OperationFieldBase::setDeprecated ( bool deprecated ) {
     }
     _deprecated = deprecated;
     emit deprecatedChanged ( deprecated );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+bool OperationFieldBase::isParameterAlreadyExist ( ParameterFieldBase *parameter ) {
+    if ( !parameter ) {
+        return false;
+    }
+    for ( Base::ParameterFieldBase *addedParameter : _parameters ) {
+        if ( addedParameter && ( addedParameter->name ( ) == parameter->name ( ) ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::addParameter ( ParameterFieldBase *parameter ) {
+    if ( !parameter ) {
+        qWarning ( ) << "Can't add parameter. Input object is null";
+        return;
+    }
+    if ( parameter->name ( ).isNull ( ) ) {
+        qWarning ( ) << "Can't add parameter. Name of parameter is not set";
+        return;
+    }
+    _parameters.append ( parameter );
 }
 
 } // Base

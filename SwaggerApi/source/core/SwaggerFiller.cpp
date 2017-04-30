@@ -130,8 +130,8 @@ void SwaggerFiller::setGet ( QJsonValue Get ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_addOperationParameters ( QJsonValue parameters ) {
-    Base::OperationFieldBase *operation = reinterpret_cast < Base::OperationFieldBase * > ( sender ( ) );
-    if ( !operation ) {
+    _currentOperation = reinterpret_cast < Base::OperationFieldBase * > ( sender ( ) );
+    if ( !_currentOperation ) {
         qWarning ( ) << "Can't add parameters to operation. Sender is not operation object";
         return;
     }
@@ -139,21 +139,33 @@ void SwaggerFiller::_addOperationParameters ( QJsonValue parameters ) {
         qWarning ( ) << "Can't add parameters to operation. Parameters input is not an array";
         return;
     }
-    // ClearCode - to sub methods
     for ( QJsonValue parameterValue : parameters.toArray ( ) ) {
-        if ( parameterValue.isObject ( ) ) {
-            QJsonObject parameter = parameterValue.toObject ( );
-            QString in = parameter.value ( "in" ).toString ( );
-            if ( in != "body" ) {
-                Data::ParameterDefaultField *parameterField = new Data::ParameterDefaultField ( );
-                _fillSwaggerField ( *parameterField, parameter );
-                // append new created object to list in 'operation'
-            }
-
-        }
+        _addOperationParameter ( parameterValue );
     }
-
 }
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addOperationParameter ( const QJsonValue &parameterValue ) {
+    if ( !parameterValue.isObject ( ) ) {
+        qWarning ( ) << "Can't add parameter to current operation. Parameter input is not an object";
+        return;
+    }
+    QJsonObject parameter = parameterValue.toObject ( );
+    QString in = parameter.value ( "in" ).toString ( );
+    Base::ParameterFieldBase *parameterField = nullptr;
+    if ( in != "body" ) {
+        parameterField = new Data::ParameterDefaultField ( );
+        _fillSwaggerField ( *parameterField, parameter );
+    } else {
+        // parameter in body
+    }
+    if ( _currentOperation->isParameterAlreadyExist ( parameterField ) ) {
+        qWarning ( ) << "Can't add parameter" << parameter.value ( "name" ).toString ( )
+                     << "to current operation. This operation already has this parameter";
+        return;
+    }
+    _currentOperation->addParameter ( parameterField );
+}
+
 
 } // Core
 } // Swagger

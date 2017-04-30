@@ -47,6 +47,10 @@ void Swagger::_clearOperations ( ) {
 // - property
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString Swagger::swagger ( ) const {
+    return _swagger;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 InfoField *Swagger::info ( ) {
     return &_info;
 }
@@ -159,6 +163,10 @@ void Swagger::addOperation ( Base::OperationFieldBase *operation ) {
         return;
     }
     _operations.append ( operation );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QList<Base::OperationFieldBase *> Swagger::operations ( ) const {
+    return _operations;
 }
 
 } // Data

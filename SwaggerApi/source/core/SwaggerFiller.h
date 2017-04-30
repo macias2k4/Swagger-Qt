@@ -75,6 +75,8 @@ private:
     Data::Swagger *_swagger = nullptr;
     /// \brief _lastError -> last error message
     QString _lastErrorMessage = QString ( );
+    /// \brief _currentOperation -> operation, into which parameters and responses are adding
+    Base::OperationFieldBase *_currentOperation = nullptr;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -86,6 +88,8 @@ private:
     /// \brief _fillSwaggerField -> fill swagger 'advanced' field
     void _fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
                              const QJsonObject &annotationContent );
+    /// \brief _addOperationParameter -> adding single parameter into current operation
+    void _addOperationParameter ( const QJsonValue &parameterValue );
 
 };
 
