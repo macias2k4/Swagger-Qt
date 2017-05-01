@@ -83,41 +83,97 @@ QJsonObject SwaggerJsonSerializer::_createOperationJson ( ) {
         { "summary", _currentOperation->summary ( ) },
         { "operationId", _currentOperation->operationId ( ) }
     };
-    // clear code - sub methods !
-    QJsonArray tags;
-    for ( QString tag : _currentOperation->tags ( ) ) {
-        tags.append ( tag );
+    _addJsonArrayToJsonObject ( operationJson, "tags", _currentOperation->tags ( ) );
+    _addJsonArrayToJsonObject ( operationJson, "consumes", _currentOperation->consumes ( ) );
+    _addJsonArrayToJsonObject ( operationJson, "produces", _currentOperation->produces ( ) );
+    _addJsonArrayToJsonObject ( operationJson, "schemes", _currentOperation->schemes ( ) );
+    _addParametersForCurrentOperation ( operationJson );
+    _addResponsesForCurrentOperation ( operationJson );
+    return operationJson;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addJsonArrayToJsonObject ( QJsonObject &object, QString inputKey,
+        const QStringList &inputValues ) {
+    QJsonArray array;
+    for ( QString value : inputValues ) {
+        array.append ( value );
     }
-    operationJson.insert ( "tags", tags );
-    QJsonArray consumes;
-    for ( QString consume : _currentOperation->consumes ( ) ) {
-        consumes.append ( consume );
-    }
-    operationJson.insert ( "consumes", consumes );
-    QJsonArray produces;
-    for ( QString produce : _currentOperation->produces ( ) ) {
-        produces.append ( produce );
-    }
-    operationJson.insert ( "produces", produces );
-    QJsonArray schemes;
-    for ( QString scheme : _currentOperation->schemes ( ) ) {
-        schemes.append ( scheme );
-    }
-    operationJson.insert ( "schemes", schemes );
+    object.insert ( inputKey, array );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addParametersForCurrentOperation ( QJsonObject &operationJson ) {
     QJsonArray parameters;
     for ( Base::ParameterFieldBase *parameter : _currentOperation->parameters ( ) ) {
-        if ( parameter ) {
-            // depending on 'in' value different extending parameters
-            parameters.append ( QJsonObject {
-                { "name", parameter->name ( ) },
-                { "in", parameter->in ( ) },
-                { "description", parameter->description ( ) },
-                { "required", parameter->required ( ) }
-            } );
-        }
+        _currentParameter = parameter;
+        _addCurrentParameterToParametersJson ( parameters );
     }
     operationJson.insert ( "parameters", parameters );
-    return operationJson;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addCurrentParameterToParametersJson ( QJsonArray &parameters ) {
+    if ( !_currentParameter ) {
+        qWarning ( ) << "Can't add single parameter to operation" << QString ( "'%1 %2'" )
+                     .arg ( _currentOperation->operationTypeAsString ( ) ).arg (  _currentOperation->path ( ) );
+        return;
+    }
+    QJsonObject parameter {
+        { "name", _currentParameter->name ( ) },
+        { "in", _currentParameter->in ( ) },
+        { "description", _currentParameter->description ( ) },
+        { "required", _currentParameter->required ( ) }
+    };
+    if ( !_currentParameter->in ( ).isEmpty ( ) && ( _currentParameter->in ( ) != "body" ) ) {
+        _extendParameterByDefaultParameterProperties ( parameter );
+    } else {
+        //        _extendParameterByBodyParameterProperties ( parameter );
+    }
+    parameters.append ( parameter );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_extendParameterByDefaultParameterProperties ( QJsonObject &parameter ) {
+    Data::ParameterDefaultField *parameterDefault = reinterpret_cast < Data::ParameterDefaultField * >
+            ( _currentParameter );
+    if ( !parameterDefault ) {
+        qWarning ( ) << "Can't extend json parameter object by default parameter proeprties in operations"
+                     << QString ( "'%1 %2'" ).arg ( _currentOperation->operationTypeAsString ( ) )
+                     .arg (  _currentOperation->path ( ) );
+        return;
+    }
+    parameter.insert ( "type", parameterDefault->type ( ) );
+    parameter.insert ( "format", parameterDefault->format ( ) );
+    parameter.insert ( "allowEmptyValue", parameterDefault->allowEmptyValue ( ) );
+    // items to add
+    parameter.insert ( "collectionFormat", parameterDefault->collectionFormat ( ) );
+    parameter.insert ( "maximum", parameterDefault->maximum ( ) );
+    parameter.insert ( "exclusiveMaximum", parameterDefault->exclusiveMaximum ( ) );
+    parameter.insert ( "minimum", parameterDefault->minimum ( ) );
+    parameter.insert ( "exclusiveMinimum", parameterDefault->exclusiveMinimum ( ) );
+    parameter.insert ( "maxLength", parameterDefault->maxLength ( ) );
+    parameter.insert ( "minLength", parameterDefault->minLength ( ) );
+    parameter.insert ( "pattern", parameterDefault->pattern ( ) );
+    parameter.insert ( "maxItems", parameterDefault->maxItems ( ) );
+    parameter.insert ( "minItems", parameterDefault->minItems ( ) );
+    parameter.insert ( "uniqueItems", parameterDefault->uniqueItems ( ) );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addResponsesForCurrentOperation ( QJsonObject &operationJson ) {
+    QJsonObject responses;
+    for ( Data::ResponseField *response : _currentOperation->responses ( ) ) {
+        _currentResponse = response;
+        _addCurrentResponseToResponsesJson ( responses );
+    }
+    operationJson.insert ( "responses", responses );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addCurrentResponseToResponsesJson ( QJsonObject &responses ) {
+    if ( !_currentResponse ) {
+        qWarning ( ) << "Can't add single response to operation" << QString ( "'%1 %2'" )
+                     .arg ( _currentOperation->operationTypeAsString ( ) ).arg (  _currentOperation->path ( ) );
+        return;
+    }
+    responses.insert ( _currentResponse->responseKey ( ), QJsonObject {
+        { "description", _currentResponse->description ( ) }
+    } );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

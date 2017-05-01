@@ -27,6 +27,10 @@ QString OperationFieldBase::operationTypeValueToString ( OperationFieldBase::Ope
 bool OperationFieldBase::isFieldAlreadySet ( ) const {
     return false;
 }
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString OperationFieldBase::operationTypeAsString ( ) const {
+    return operationTypeValueToString ( operationType ( ) );
+}
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void OperationFieldBase::clear ( ) {
@@ -150,6 +154,19 @@ QList<Base::ParameterFieldBase *> OperationFieldBase::parameters ( ) const {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+QJsonValue OperationFieldBase::responsesJson ( ) const {
+    return QJsonValue ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::setResponsesJson ( QJsonValue responses ) {
+    emit setResponsesDetected ( responses );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QList<Data::ResponseField *> OperationFieldBase::responses ( ) const {
+    return _responses;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 QStringList OperationFieldBase::schemes ( ) const {
     return _schemes;
 }
@@ -198,6 +215,31 @@ void OperationFieldBase::addParameter ( ParameterFieldBase *parameter ) {
         return;
     }
     _parameters.append ( parameter );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+bool OperationFieldBase::isResponseAlreadyExist ( Data::ResponseField *response ) {
+    if ( !response ) {
+        return false;
+    }
+    for ( Data::ResponseField *addedResponse : _responses ) {
+        if ( addedResponse && ( addedResponse->responseKey ( ) == response->responseKey ( ) ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void OperationFieldBase::addResponse ( Data::ResponseField *response ) {
+    if ( !response ) {
+        qWarning ( ) << "Can't add response. Input object is null";
+        return;
+    }
+    if ( response->description ( ).isNull ( ) ) {
+        qWarning ( ) << "Can't add response. description of response is not set";
+        return;
+    }
+    _responses.append ( response );
 }
 
 } // Base

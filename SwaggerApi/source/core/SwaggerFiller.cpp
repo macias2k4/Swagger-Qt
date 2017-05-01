@@ -120,6 +120,8 @@ void SwaggerFiller::setGet ( QJsonValue Get ) {
     Data::GetOperationField *getOperation = new Data::GetOperationField ( );
     connect ( getOperation, &Data::GetOperationField::setParametersDetected,
               this, &SwaggerFiller::_addOperationParameters );
+    connect ( getOperation, &Data::GetOperationField::setResponsesDetected,
+              this, &SwaggerFiller::_addOperationResponses );
     _fillSwaggerField ( *getOperation, Get.toObject ( ) );
     if ( _swagger->isOperationAlreadyExist ( getOperation ) ) {
         _setLastErrorMessage ( "Can't add Get operation, it's already exist" );
@@ -165,7 +167,39 @@ void SwaggerFiller::_addOperationParameter ( const QJsonValue &parameterValue ) 
     }
     _currentOperation->addParameter ( parameterField );
 }
-
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addOperationResponses ( QJsonValue responses ) {
+    _currentOperation = reinterpret_cast < Base::OperationFieldBase * > ( sender ( ) );
+    if ( !_currentOperation ) {
+        qWarning ( ) << "Can't add responses to operation. Sender is not operation object";
+        return;
+    }
+    if ( !responses.isObject ( ) ) {
+        qWarning ( ) << "Can't add responses to operation. Responses input is not an object";
+        return;
+    }
+    QJsonObject responsesObject = responses.toObject ( );
+    for ( QString responseKey : responsesObject.keys ( ) ) {
+        _addOperationResponse ( responseKey, responsesObject.value ( responseKey ) );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addOperationResponse ( const QString &responseKey, const QJsonValue &responseValue ) {
+    if ( !responseValue.isObject ( ) ) {
+        qWarning ( ) << "Can't add response to current operation. Response input is not an object";
+        return;
+    }
+    QJsonObject response = responseValue.toObject ( );
+    Data::ResponseField *responseField = new Data::ResponseField ( );
+    responseField->setResponseKey ( responseKey );
+    if ( _currentOperation->isResponseAlreadyExist ( responseField ) ) {
+        qWarning ( ) << "Can't add response" << responseKey
+                     << "to current operation. This operation already has this response";
+        return;
+    }
+    _fillSwaggerField ( *responseField, response );
+    _currentOperation->addResponse ( responseField );
+}
 
 } // Core
 } // Swagger

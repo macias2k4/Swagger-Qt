@@ -22,7 +22,7 @@ class ParameterDefaultField : public Base::ParameterFieldBase {
     Q_PROPERTY ( QString format READ format WRITE setFormat NOTIFY formatChanged )
     Q_PROPERTY ( bool allowEmptyValue READ allowEmptyValue WRITE setAllowEmptyValue NOTIFY
                  allowEmptyValueChanged )
-    // items
+    // items to add
     Q_PROPERTY ( QString collectionFormat READ collectionFormat WRITE setCollectionFormat NOTIFY
                  collectionFormatChanged )
     Q_PROPERTY ( double maximum READ maximum WRITE setMaximum NOTIFY maximumChanged )

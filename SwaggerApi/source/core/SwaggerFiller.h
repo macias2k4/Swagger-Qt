@@ -65,6 +65,8 @@ public slots:
 private slots:
     /// \brief _addOperationParameters -> adding parameters objects to operation object (sender)
     void _addOperationParameters ( QJsonValue parameters );
+    /// \brief _addOperationResponses -> adding responses objects to operation object (sender)
+    void _addOperationResponses ( QJsonValue responses );
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -90,6 +92,8 @@ private:
                              const QJsonObject &annotationContent );
     /// \brief _addOperationParameter -> adding single parameter into current operation
     void _addOperationParameter ( const QJsonValue &parameterValue );
+    /// \brief _addOperationResponse -> adding single response into current operation
+    void _addOperationResponse ( const QString &responseKey, const QJsonValue &responseValue );
 
 };
 

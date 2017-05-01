@@ -16,6 +16,7 @@
 // Swagger
 #include <SwaggerFieldBase.h>
 #include <ParameterFieldBase.h>
+#include <ResponseField.h>
 
 namespace Swagger {
 namespace Base {
@@ -30,7 +31,10 @@ class OperationFieldBase : public SwaggerFieldBase {
     Q_PROPERTY ( QString operationId READ operationId WRITE setOperationId NOTIFY operationIdChanged )
     Q_PROPERTY ( QStringList consumes READ consumes WRITE setConsumes NOTIFY consumesChanged )
     Q_PROPERTY ( QStringList produces READ produces WRITE setProduces NOTIFY producesChanged )
-    Q_PROPERTY ( QJsonValue Parameters READ parametersJson WRITE setParametersJson NOTIFY setParametersDetected )
+    Q_PROPERTY ( QJsonValue Parameters READ parametersJson WRITE setParametersJson NOTIFY
+                 setParametersDetected )
+    Q_PROPERTY ( QJsonValue Responses READ responsesJson WRITE setResponsesJson NOTIFY
+                 setResponsesDetected )
     Q_PROPERTY ( QStringList schemes READ schemes WRITE setSchemes NOTIFY schemesChanged )
     Q_PROPERTY ( bool deprecated READ deprecated WRITE setDeprecated NOTIFY deprecatedChanged )
 
@@ -56,6 +60,8 @@ public:
 
     /// \brief operationType -> return type of operation
     virtual Base::OperationFieldBase::OperationType operationType ( ) const = 0;
+    /// \brief operationTypeAsString -> return type of operation as string
+    QString operationTypeAsString ( ) const;
     /// \brief clear -> clear properties of current field
     virtual void clear ( ) override;
 
@@ -86,6 +92,10 @@ public:
     void setParametersJson ( QJsonValue parametersJson );
     QList < Base::ParameterFieldBase * >  parameters ( ) const;
 
+    QJsonValue responsesJson ( ) const;
+    void setResponsesJson ( QJsonValue responses );
+    QList < Data::ResponseField * > responses ( ) const;
+
     QStringList schemes ( ) const;
     void setSchemes ( QStringList schemes );
 
@@ -97,6 +107,11 @@ public:
     bool isParameterAlreadyExist ( Base::ParameterFieldBase *parameter );
     /// \brief addParameter -> adding new parameter object to list
     void addParameter ( Base::ParameterFieldBase *parameter );
+
+    /// \brief isResponseAlreadyExist -> check is given response already added to this operation
+    bool isResponseAlreadyExist ( Data::ResponseField *response );
+    /// \brief addResponse -> adding new response object to list
+    void addResponse ( Data::ResponseField *response );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -111,11 +126,11 @@ signals:
     void schemesChanged ( QStringList schemes );
     void deprecatedChanged ( bool deprecated );
     void pathChanged ( QString path );
+    void setResponsesDetected ( QJsonValue Responses );
 
 public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // slots
-
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -146,8 +161,9 @@ private:
     /// operation should be refrained. Default value is false
     bool _deprecated = false;
     /// \brief _parameters -> list of operation parameters
-    QList < Base::ParameterFieldBase* > _parameters;
-
+    QList < Base::ParameterFieldBase * > _parameters;
+    /// \brief _responses -> list of operation responses, depending of response code
+    QList < Data::ResponseField * > _responses;
 };
 
 } // Base
