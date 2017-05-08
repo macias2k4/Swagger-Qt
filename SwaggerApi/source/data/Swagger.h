@@ -70,6 +70,10 @@ public:
     /// \brief operations -> return list of operations of API
     QList < Base::OperationFieldBase * > operations ( ) const;
 
+    // - definition
+    /// \brief addDefinition -> adding new definition object
+    void addDefinition ( );
+
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals

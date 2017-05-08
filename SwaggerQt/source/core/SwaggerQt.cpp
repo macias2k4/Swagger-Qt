@@ -61,5 +61,28 @@ void SwaggerQt::setSourceCodeFilesPath ( const QString &sourceCodeFilesPath ) {
 /// }
 
 
+/// "@Swg.Definition" : {
+///     "name" : "model_1",
+///     "type" : "object",
+///     "@Swg.Properties" : {
+///         "id" : {
+///             "type": "integer",
+///             "format" : "int64",
+///             "description": "Unique identifier"
+///         },
+///         "name" : {
+///             "type": "string",
+///             "description": "name of object"
+///         },
+///         "arrayOfModel2": {
+///             "type": "array",
+///             "items": {
+///                 "$ref": "#/definitions/model_2"
+///             }
+///         }
+///     }
+/// }
+
+
 } // Core
 } // Swagger

@@ -108,6 +108,7 @@ void SwaggerFiller::setInfo ( QJsonValue Info ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+// operations
 QJsonValue SwaggerFiller::get ( ) const {
     return QJsonValue ( );
 }
@@ -184,7 +185,8 @@ void SwaggerFiller::_addOperationResponses ( QJsonValue responses ) {
     }
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void SwaggerFiller::_addOperationResponse ( const QString &responseKey, const QJsonValue &responseValue ) {
+void SwaggerFiller::_addOperationResponse ( const QString &responseKey,
+        const QJsonValue &responseValue ) {
     if ( !responseValue.isObject ( ) ) {
         qWarning ( ) << "Can't add response to current operation. Response input is not an object";
         return;
@@ -199,6 +201,19 @@ void SwaggerFiller::_addOperationResponse ( const QString &responseKey, const QJ
     }
     _fillSwaggerField ( *responseField, response );
     _currentOperation->addResponse ( responseField );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+// definitions
+QJsonValue SwaggerFiller::definition ( ) const {
+    return QJsonValue ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::setDefinition ( QJsonValue Definition ) {
+    if ( !Definition.isObject ( ) ) {
+        _setLastErrorMessage ( "Can't add new Definition field, input parameter is not a QJsonObject" );
+        return;
+    }
 }
 
 } // Core

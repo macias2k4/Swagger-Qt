@@ -30,6 +30,8 @@ class SwaggerFiller : public QObject {
     Q_PROPERTY ( QJsonValue Swagger READ swagger WRITE setSwagger )
     Q_PROPERTY ( QJsonValue Info READ Info WRITE setInfo )
     Q_PROPERTY ( QJsonValue Get READ get WRITE setGet )
+    //    Q_PROPERTY ( QJsonValue Post READ post WRITE setPost )
+    Q_PROPERTY ( QJsonValue Definition READ definition WRITE setDefinition )
 
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -51,6 +53,10 @@ public:
     // -- operations
     QJsonValue get ( ) const;
     void setGet ( QJsonValue Get );
+
+    // -- definitions
+    QJsonValue definition ( ) const;
+    void setDefinition ( QJsonValue Definition );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
