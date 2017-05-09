@@ -35,10 +35,17 @@ void Swagger::clear ( ) {
     _consumes.clear ( );
     _produces.clear ( );
     _clearOperations ( );
+    _clearDefinitions ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void Swagger::_clearOperations ( ) {
     while ( !_operations.isEmpty ( ) ) {
+        delete _operations.takeFirst ( );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void Swagger::_clearDefinitions ( ) {
+    while ( !_definitions.isEmpty ( ) ) {
         delete _operations.takeFirst ( );
     }
 }
@@ -167,6 +174,36 @@ void Swagger::addOperation ( Base::OperationFieldBase *operation ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 QList<Base::OperationFieldBase *> Swagger::operations ( ) const {
     return _operations;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+// definitions
+bool Swagger::isDefinitionAlreadyExist ( DefinitionField *definition ) {
+    if ( !definition ) {
+        return false;
+    }
+    for ( DefinitionField *addedDefinition : _definitions ) {
+        if ( addedDefinition && ( addedDefinition->name ( ) == definition->name ( ) ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void Swagger::addDefinition ( DefinitionField *definition ) {
+    if ( !definition ) {
+        qWarning ( ) << "Can't add definition. Input object is null";
+        return;
+    }
+    if ( definition->name ( ).isEmpty ( ) ) {
+        qWarning ( ) << "Can't add definition. Name of definition is empty";
+        return;
+    }
+    _definitions.append ( definition );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QList<DefinitionField *> Swagger::definitions ( ) const {
+    return _definitions;
 }
 
 } // Data

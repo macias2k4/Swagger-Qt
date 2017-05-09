@@ -13,6 +13,7 @@
 #include <SwaggerFieldBase.h>
 #include <InfoField.h>
 #include <GetOperationField.h>
+#include <DefinitionField.h>
 
 namespace Swagger {
 namespace Data {
@@ -71,8 +72,12 @@ public:
     QList < Base::OperationFieldBase * > operations ( ) const;
 
     // - definition
-    /// \brief addDefinition -> adding new definition object
-    void addDefinition ( );
+    /// \brief isDefinitionAlreadyExist -> check is given definition already added in definitions list
+    bool isDefinitionAlreadyExist ( DefinitionField *definition );
+    /// \brief addDefinition -> adding new definition object to list
+    void addDefinition ( DefinitionField *definition );
+    /// \brief definitions -> return list of definitions of API
+    QList < DefinitionField * > definitions ( ) const;
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -113,6 +118,8 @@ private:
     QStringList _produces;
     /// \brief _operations -> list of API operations
     QList < Base::OperationFieldBase * > _operations;
+    /// \brief _definitions -> list of API definitions
+    QList < DefinitionField * > _definitions;
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -120,6 +127,8 @@ private:
     void _registerMetaTypes ( );
     /// \brief _clearOperations -> clear swagger operations
     void _clearOperations ( );
+    /// \brief _clearDefinitions -> clear swagger definitions
+    void _clearDefinitions ( );
 };
 
 } // Data

@@ -69,10 +69,15 @@ public slots:
     void fill ( const QString &annotationName, const QJsonValue &annotationContent );
 
 private slots:
+    // - operations
     /// \brief _addOperationParameters -> adding parameters objects to operation object (sender)
     void _addOperationParameters ( QJsonValue parameters );
     /// \brief _addOperationResponses -> adding responses objects to operation object (sender)
     void _addOperationResponses ( QJsonValue responses );
+
+    // - definitions
+    /// \brief _addDefinitionProperties -> adding properties objects to definition object (sender)
+    void _addDefinitionProperties ( QJsonValue properties );
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -85,6 +90,10 @@ private:
     QString _lastErrorMessage = QString ( );
     /// \brief _currentOperation -> operation, into which parameters and responses are adding
     Base::OperationFieldBase *_currentOperation = nullptr;
+    /// \brief _currentOperation -> operation, into which parameters and responses are adding
+    Data::DefinitionField *_currentDefinition = nullptr;
+    /// \brief _currentDefinitionPropertyName -> name of current adding property to current Definition
+    QString _currentDefinitionPropertyName = QString ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -96,11 +105,16 @@ private:
     /// \brief _fillSwaggerField -> fill swagger 'advanced' field
     void _fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
                              const QJsonObject &annotationContent );
+
+    // - operations
     /// \brief _addOperationParameter -> adding single parameter into current operation
     void _addOperationParameter ( const QJsonValue &parameterValue );
     /// \brief _addOperationResponse -> adding single response into current operation
     void _addOperationResponse ( const QString &responseKey, const QJsonValue &responseValue );
 
+    // - definitions
+    /// \brief _addDefinitionProperty -> adding current property objects to current definition object
+    void _addDefinitionProperty ( QJsonValue propertyValue );
 };
 
 

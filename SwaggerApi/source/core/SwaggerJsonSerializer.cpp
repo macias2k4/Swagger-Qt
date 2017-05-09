@@ -37,6 +37,7 @@ void SwaggerJsonSerializer::_createSwaggerRootJsonObject ( ) {
     _swaggerJson.insert ( "basePath", _swagger->basePath ( ) );
     _addSchemesToSwaggerJson ( );
     _addPathsToSwaggerJson ( );
+    _addDefinitionsToSwaggerJson ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerJsonSerializer::_addInfoToSwaggerJson ( ) {
@@ -54,7 +55,9 @@ void SwaggerJsonSerializer::_addSchemesToSwaggerJson ( ) {
     }
     _swaggerJson.insert ( "schemes", schemes );
 }
+
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+// paths
 void SwaggerJsonSerializer::_addPathsToSwaggerJson ( ) {
     _clearJsonObject ( _pathsJson );
     for ( Base::OperationFieldBase *operation : _swagger->operations ( ) ) {
@@ -173,6 +176,56 @@ void SwaggerJsonSerializer::_addCurrentResponseToResponsesJson ( QJsonObject &re
     }
     responses.insert ( _currentResponse->responseKey ( ), QJsonObject {
         { "description", _currentResponse->description ( ) }
+    } );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+// definitions
+void SwaggerJsonSerializer::_addDefinitionsToSwaggerJson ( ) {
+    _clearJsonObject ( _definitionsJson );
+    for ( Data::DefinitionField *definition : _swagger->definitions ( ) ) {
+        _currentDefinition = definition;
+        _addDefinitionToDefinitionsJson ( );
+    }
+    _swaggerJson.insert ( "definitions", _definitionsJson );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addDefinitionToDefinitionsJson ( ) {
+    if ( !_currentDefinition ) {
+        qWarning ( ) << "Can't add single definition to definitions";
+        return;
+    }
+    QJsonObject definitonJson = _createDefinitionJson ( );
+    _definitionsJson.insert ( _currentDefinition->name ( ), definitonJson );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QJsonObject SwaggerJsonSerializer::_createDefinitionJson ( ) {
+    QJsonObject definitionJson {
+        { "type", _currentDefinition->type ( ) }
+    };
+    _addPropertiesForCurrentDefinition ( definitionJson );
+    return definitionJson;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addPropertiesForCurrentDefinition ( QJsonObject &definitionJson ) {
+    QJsonObject properties;
+    for ( Data::PropertyField *property : _currentDefinition->properties ( ) ) {
+        _currentProperty = property;
+        _addCurrentPropertyToPropertiesJson ( properties );
+    }
+    definitionJson.insert ( "properties", properties );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addCurrentPropertyToPropertiesJson ( QJsonObject &properties ) {
+    if ( !_currentProperty ) {
+        qWarning ( ) << "Can't add single property to definition" << QString ( "'%1 %2'" )
+                     .arg ( _currentProperty->name ( ) ).arg (  _currentDefinition->name ( ) );
+        return;
+    }
+    properties.insert ( _currentProperty->name ( ), QJsonObject {
+        { "type", _currentProperty->type ( ) },
+        { "format", _currentProperty->format ( ) },
+        { "description", _currentProperty->description ( ) }
     } );
 }
 

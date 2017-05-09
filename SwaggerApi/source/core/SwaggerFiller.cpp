@@ -214,6 +214,49 @@ void SwaggerFiller::setDefinition ( QJsonValue Definition ) {
         _setLastErrorMessage ( "Can't add new Definition field, input parameter is not a QJsonObject" );
         return;
     }
+    Data::DefinitionField *definition = new Data::DefinitionField ( );
+    connect ( definition, &Data::DefinitionField::setPropertiesDetected,
+              this, &SwaggerFiller::_addDefinitionProperties );
+    _fillSwaggerField ( *definition, Definition.toObject ( ) );
+    if ( _swagger->isDefinitionAlreadyExist ( definition ) ) {
+        _setLastErrorMessage ( "Can't add Definition, it's already exist" );
+        delete definition;
+        return;
+    }
+    _swagger->addDefinition ( definition );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addDefinitionProperties ( QJsonValue properties ) {
+    _currentDefinition = reinterpret_cast < Data::DefinitionField * > ( sender ( ) );
+    if ( !_currentDefinition ) {
+        qWarning ( ) << "Can't add properties to definitions. Sender is not definition object";
+        return;
+    }
+    if ( !properties.isObject ( ) ) {
+        qWarning ( ) << "Can't add properties to definitions. Properties input is not an object";
+        return;
+    }
+    for ( QString key : properties.toObject ( ).keys ( ) ) {
+        _currentDefinitionPropertyName = key;
+        _addDefinitionProperty ( properties.toObject().value ( key ) );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addDefinitionProperty ( QJsonValue propertyValue ) {
+    if ( !propertyValue.isObject ( ) ) {
+        qWarning ( ) << "Can't add property to current definition. Property input is not an object";
+        return;
+    }
+    QJsonObject property = propertyValue.toObject ( );
+    Data::PropertyField *propertyField = new Data::PropertyField ( );
+    propertyField->setName ( _currentDefinitionPropertyName );
+    if ( _currentDefinition->isPropertyAlreadyExist ( propertyField ) ) {
+        qWarning ( ) << "Can't add property" << _currentDefinitionPropertyName
+                     << "to current definition. This definition already has this property";
+        return;
+    }
+    _fillSwaggerField ( *propertyField, property );
+    _currentDefinition->addProperty ( propertyField );
 }
 
 } // Core

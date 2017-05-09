@@ -46,6 +46,9 @@ void OperationFieldBase::clear ( ) {
     while ( !_parameters.isEmpty ( ) ) {
         delete _parameters.takeFirst ( );
     }
+    while ( !_responses.isEmpty ( ) ) {
+        delete _responses.takeFirst ( );
+    }
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //

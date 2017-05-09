@@ -102,12 +102,13 @@ public:
     bool deprecated ( ) const;
     void setDeprecated ( bool deprecated );
 
-    // -- operation
+    // -- parameters
     /// \brief isParameterAlreadyExist -> check is given parameter already added to this operation
     bool isParameterAlreadyExist ( Base::ParameterFieldBase *parameter );
     /// \brief addParameter -> adding new parameter object to list
     void addParameter ( Base::ParameterFieldBase *parameter );
 
+    // -- responses
     /// \brief isResponseAlreadyExist -> check is given response already added to this operation
     bool isResponseAlreadyExist ( Data::ResponseField *response );
     /// \brief addResponse -> adding new response object to list

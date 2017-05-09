@@ -65,6 +65,13 @@ private:
     /// \brief _currentResponse -> response currently adding to json
     Data::ResponseField *_currentResponse = nullptr;
 
+    /// \brief _definitionsJson -> objest with definitions
+    QJsonObject _definitionsJson;
+    /// \brief _currentDefinition -> definition currently adding to json
+    Data::DefinitionField *_currentDefinition = nullptr;
+    /// \brief _currentProperty -> definition property currently adding to json
+    Data::PropertyField *_currentProperty = nullptr;
+
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
     /// \brief _clearJsonObject -> clearing passed json object
@@ -75,6 +82,8 @@ private:
     void _addInfoToSwaggerJson ( );
     /// \brief _addSchemesToSwaggerJson -> add schemes to swagger json object
     void _addSchemesToSwaggerJson ( );
+
+    // - paths (operations)
     /// \brief _addPathsToSwaggerJson -> add paths to swagger json object
     void _addPathsToSwaggerJson ( );
     /// \brief _addOperationToPathsJson -> add single operation for paths in swagger
@@ -99,6 +108,19 @@ private:
     /// adding to json
     void _addCurrentResponseToResponsesJson ( QJsonObject &responses );
 
+    // - definitions
+    /// \brief _addDefinitionsToSwaggerJson -> add definitions to swagger json object
+    void _addDefinitionsToSwaggerJson ( );
+    /// \brief _addDefinitionToDefinitionsJson -> add single definition for definitions in swagger
+    void _addDefinitionToDefinitionsJson ( );
+    /// \brief _createDefinitionJson -> creating definition json object
+    QJsonObject _createDefinitionJson ( );
+    /// \brief _addPropertiesForCurrentDefinition -> adding properties for definition currently adding
+    /// to json
+    void _addPropertiesForCurrentDefinition ( QJsonObject &definitionJson );
+    /// \brief _addCurrentPropertyToPropertiesJson -> adding current property for definition currently
+    /// adding to json
+    void _addCurrentPropertyToPropertiesJson ( QJsonObject &properties );
 };
 
 } // Core

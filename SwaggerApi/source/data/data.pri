@@ -5,11 +5,15 @@ HEADERS += \
     $$PWD/InfoField.h \
     $$PWD/GetOperationField.h \
     $$PWD/ParameterDefaultField.h \
-    $$PWD/ResponseField.h
+    $$PWD/ResponseField.h \
+    $$PWD/DefinitionField.h \
+    $$PWD/PropertyField.h
 
 SOURCES += \
     $$PWD/Swagger.cpp \
     $$PWD/InfoField.cpp \
     $$PWD/GetOperationField.cpp \
     $$PWD/ParameterDefaultField.cpp \
-    $$PWD/ResponseField.cpp
+    $$PWD/ResponseField.cpp \
+    $$PWD/DefinitionField.cpp \
+    $$PWD/PropertyField.cpp
