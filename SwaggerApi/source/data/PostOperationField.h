@@ -1,5 +1,13 @@
-#ifndef GETOPERATIONFIELD_H
-#define GETOPERATIONFIELD_H
+/**
+  * \file     PostOperationField.h
+  * \author   m.lamparski
+  * \date     2017-05-10
+  * \version  $Revision$
+  * \brief    File with class Post operation object
+
+*/
+#ifndef POSTOPERATIONFIELD_H
+#define POSTOPERATIONFIELD_H
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
@@ -8,14 +16,14 @@
 namespace Swagger {
 namespace Data {
 
-/// \brief GetOperationField -> Get operation object
-class GetOperationField : public Base::OperationFieldBase {
+/// \brief PostOperationField -> Post operation object
+class PostOperationField : public Base::OperationFieldBase {
     Q_OBJECT
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
-    explicit GetOperationField ( QObject *parent = 0 );
-    ~GetOperationField ( );
+    explicit PostOperationField ( QObject *parent = 0 );
+    ~PostOperationField ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // methods
@@ -41,6 +49,4 @@ private:
 } // Data
 } // Swagger
 
-//Q_DECLARE_METATYPE ( Swagger::Data::GetOperationField )
-
-#endif // GETOPERATIONFIELD_H
+#endif // POSTOPERATIONFIELD_H

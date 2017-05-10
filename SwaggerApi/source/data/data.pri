@@ -7,7 +7,8 @@ HEADERS += \
     $$PWD/ParameterDefaultField.h \
     $$PWD/ResponseField.h \
     $$PWD/DefinitionField.h \
-    $$PWD/PropertyField.h
+    $$PWD/PropertyField.h \
+    $$PWD/PostOperationField.h
 
 SOURCES += \
     $$PWD/Swagger.cpp \
@@ -16,4 +17,5 @@ SOURCES += \
     $$PWD/ParameterDefaultField.cpp \
     $$PWD/ResponseField.cpp \
     $$PWD/DefinitionField.cpp \
-    $$PWD/PropertyField.cpp
+    $$PWD/PropertyField.cpp \
+    $$PWD/PostOperationField.cpp

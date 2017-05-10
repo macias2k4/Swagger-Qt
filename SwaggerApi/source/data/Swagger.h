@@ -13,6 +13,7 @@
 #include <SwaggerFieldBase.h>
 #include <InfoField.h>
 #include <GetOperationField.h>
+#include <PostOperationField.h>
 #include <DefinitionField.h>
 
 namespace Swagger {

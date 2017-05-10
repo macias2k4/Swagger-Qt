@@ -42,7 +42,8 @@ public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // types
     enum class OperationType {
-        Get
+        Get,
+        Post
     };
     Q_ENUM ( OperationType )
     /// \brief operationTypeValueToString -> return enum value as string

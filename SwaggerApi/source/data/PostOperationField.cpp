@@ -1,14 +1,14 @@
-#include "GetOperationField.h"
+#include "PostOperationField.h"
 
 namespace Swagger {
 namespace Data {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-GetOperationField::GetOperationField ( QObject *parent )
+PostOperationField::PostOperationField ( QObject *parent )
     : Base::OperationFieldBase ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-GetOperationField::~GetOperationField ( ) {
+PostOperationField::~PostOperationField ( ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -16,8 +16,8 @@ GetOperationField::~GetOperationField ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-Base::OperationFieldBase::OperationType GetOperationField::operationType ( ) const {
-    return OperationType::Get;
+Base::OperationFieldBase::OperationType PostOperationField::operationType ( ) const {
+    return OperationType::Post;
 }
 
 } // Data

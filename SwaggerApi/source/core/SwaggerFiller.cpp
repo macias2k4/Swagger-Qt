@@ -42,8 +42,9 @@ void SwaggerFiller::_setLastErrorMessage ( const QString &message ) {
     qWarning ( ) << _ModuleName << message;
 }
 
+
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonValue SwaggerFiller::swagger ( ) const {
+QJsonValue SwaggerFiller::emptyJsonObject ( ) const {
     return QJsonValue ( );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -91,10 +92,6 @@ void SwaggerFiller::_fillSwaggerField ( Base::SwaggerFieldBase &swaggerField,
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonValue SwaggerFiller::Info ( ) const {
-    return QJsonValue ( );
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setInfo ( QJsonValue Info ) {
     if ( !Info.isObject ( ) ) {
         _setLastErrorMessage ( "Can't set Info field, input parameter is not a QJsonObject" );
@@ -109,10 +106,6 @@ void SwaggerFiller::setInfo ( QJsonValue Info ) {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // operations
-QJsonValue SwaggerFiller::get ( ) const {
-    return QJsonValue ( );
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::setGet ( QJsonValue Get ) {
     if ( !Get.isObject ( ) ) {
         _setLastErrorMessage ( "Can't set Get field, input parameter is not a QJsonObject" );
@@ -204,11 +197,27 @@ void SwaggerFiller::_addOperationResponse ( const QString &responseKey,
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-// definitions
-QJsonValue SwaggerFiller::definition ( ) const {
-    return QJsonValue ( );
+void SwaggerFiller::setPost ( QJsonValue Post ) {
+    if ( !Post.isObject ( ) ) {
+        _setLastErrorMessage ( "Can't set Post field, input parameter is not a QJsonObject" );
+        return;
+    }
+    Data::PostOperationField *postOperation = new Data::PostOperationField ( );
+    connect ( postOperation, &Data::PostOperationField::setParametersDetected,
+              this, &SwaggerFiller::_addOperationParameters );
+    connect ( postOperation, &Data::PostOperationField::setResponsesDetected,
+              this, &SwaggerFiller::_addOperationResponses );
+    _fillSwaggerField ( *postOperation, Post.toObject ( ) );
+    if ( _swagger->isOperationAlreadyExist ( postOperation ) ) {
+        _setLastErrorMessage ( "Can't add Post operation, it's already exist" );
+        delete postOperation;
+        return;
+    }
+    _swagger->addOperation ( postOperation );
 }
+
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+// definitions
 void SwaggerFiller::setDefinition ( QJsonValue Definition ) {
     if ( !Definition.isObject ( ) ) {
         _setLastErrorMessage ( "Can't add new Definition field, input parameter is not a QJsonObject" );

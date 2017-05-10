@@ -11,5 +11,5 @@ int main ( int argc, char *argv[] ) {
 //    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-DataProvider" );
     swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-Compiler" );
     swaggerQt.generateSwaggerFile ( );
-    return a.exec();
+    return a.exec ( );
 }

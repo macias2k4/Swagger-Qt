@@ -27,11 +27,11 @@ namespace Core {
 /// \brief SwaggerFiller -> class to fill Swagger object by annotations from source code files
 class SwaggerFiller : public QObject {
     Q_OBJECT
-    Q_PROPERTY ( QJsonValue Swagger READ swagger WRITE setSwagger )
-    Q_PROPERTY ( QJsonValue Info READ Info WRITE setInfo )
-    Q_PROPERTY ( QJsonValue Get READ get WRITE setGet )
-    //    Q_PROPERTY ( QJsonValue Post READ post WRITE setPost )
-    Q_PROPERTY ( QJsonValue Definition READ definition WRITE setDefinition )
+    Q_PROPERTY ( QJsonValue Swagger READ emptyJsonObject WRITE setSwagger )
+    Q_PROPERTY ( QJsonValue Info READ emptyJsonObject WRITE setInfo )
+    Q_PROPERTY ( QJsonValue Get READ emptyJsonObject WRITE setGet )
+    Q_PROPERTY ( QJsonValue Post READ emptyJsonObject WRITE setPost )
+    Q_PROPERTY ( QJsonValue Definition READ emptyJsonObject WRITE setDefinition )
 
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -44,18 +44,17 @@ public:
 
     // - property
 
-    QJsonValue swagger ( ) const;
+    QJsonValue emptyJsonObject ( ) const;
     void setSwagger ( QJsonValue swagger );
 
-    QJsonValue Info ( ) const;
     void setInfo ( QJsonValue Info );
 
     // -- operations
-    QJsonValue get ( ) const;
     void setGet ( QJsonValue Get );
 
+    void setPost ( QJsonValue Post );
+
     // -- definitions
-    QJsonValue definition ( ) const;
     void setDefinition ( QJsonValue Definition );
 
 signals:
@@ -86,7 +85,7 @@ private:
     const QString _ModuleName = "<SwaggerFiller>";
     /// \brief _swagger -> root object of swagger document
     Data::Swagger *_swagger = nullptr;
-    /// \brief _lastError -> last error message
+    /// \brief _lastErrorMessage -> last error message
     QString _lastErrorMessage = QString ( );
     /// \brief _currentOperation -> operation, into which parameters and responses are adding
     Base::OperationFieldBase *_currentOperation = nullptr;
@@ -115,6 +114,7 @@ private:
     // - definitions
     /// \brief _addDefinitionProperty -> adding current property objects to current definition object
     void _addDefinitionProperty ( QJsonValue propertyValue );
+
 };
 
 
