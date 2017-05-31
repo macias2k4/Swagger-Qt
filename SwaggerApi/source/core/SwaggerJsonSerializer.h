@@ -19,6 +19,7 @@
 // Swagger-Qt
 #include <Swagger.h>
 #include <ParameterDefaultField.h>
+#include <ParameterInBodyField.h>
 
 namespace Swagger {
 namespace Core {
@@ -101,6 +102,9 @@ private:
     /// \brief _extendParameterByDefaultParameterProperties -> extending parameter json object by
     /// Default (in different then 'body') _currentParameter property
     void _extendParameterByDefaultParameterProperties ( QJsonObject &parameter );
+    /// \brief _extendParameterByBodyParameterProperties -> extending parameter json object by
+    /// 'body' _currentParameter property
+    void _extendParameterByBodyParameterProperties ( QJsonObject &parameter );
     /// \brief _addResponsesForCurrentOperation -> adding responses for operation currently adding
     /// to json
     void _addResponsesForCurrentOperation ( QJsonObject &operationJson );

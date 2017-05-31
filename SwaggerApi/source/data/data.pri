@@ -8,7 +8,9 @@ HEADERS += \
     $$PWD/ResponseField.h \
     $$PWD/DefinitionField.h \
     $$PWD/PropertyField.h \
-    $$PWD/PostOperationField.h
+    $$PWD/PostOperationField.h \
+    $$PWD/ParameterInBodyField.h \
+    $$PWD/SchemaField.h
 
 SOURCES += \
     $$PWD/Swagger.cpp \
@@ -18,4 +20,6 @@ SOURCES += \
     $$PWD/ResponseField.cpp \
     $$PWD/DefinitionField.cpp \
     $$PWD/PropertyField.cpp \
-    $$PWD/PostOperationField.cpp
+    $$PWD/PostOperationField.cpp \
+    $$PWD/ParameterInBodyField.cpp \
+    $$PWD/SchemaField.cpp

@@ -128,7 +128,7 @@ void SwaggerJsonSerializer::_addCurrentParameterToParametersJson ( QJsonArray &p
     if ( !_currentParameter->in ( ).isEmpty ( ) && ( _currentParameter->in ( ) != "body" ) ) {
         _extendParameterByDefaultParameterProperties ( parameter );
     } else {
-        //        _extendParameterByBodyParameterProperties ( parameter );
+        _extendParameterByBodyParameterProperties ( parameter );
     }
     parameters.append ( parameter );
 }
@@ -137,7 +137,7 @@ void SwaggerJsonSerializer::_extendParameterByDefaultParameterProperties ( QJson
     Data::ParameterDefaultField *parameterDefault = reinterpret_cast < Data::ParameterDefaultField * >
             ( _currentParameter );
     if ( !parameterDefault ) {
-        qWarning ( ) << "Can't extend json parameter object by default parameter proeprties in operations"
+        qWarning ( ) << "Can't extend json parameter object by default parameter properties in operations"
                      << QString ( "'%1 %2'" ).arg ( _currentOperation->operationTypeAsString ( ) )
                      .arg (  _currentOperation->path ( ) );
         return;
@@ -157,6 +157,20 @@ void SwaggerJsonSerializer::_extendParameterByDefaultParameterProperties ( QJson
     parameter.insert ( "maxItems", parameterDefault->maxItems ( ) );
     parameter.insert ( "minItems", parameterDefault->minItems ( ) );
     parameter.insert ( "uniqueItems", parameterDefault->uniqueItems ( ) );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_extendParameterByBodyParameterProperties ( QJsonObject &parameter ) {
+    Data::ParameterInBodyField *parameterBody = reinterpret_cast < Data::ParameterInBodyField * >
+            ( _currentParameter );
+    if ( !parameterBody ) {
+        qWarning ( ) << "Can't extend json parameter object by Body parameter properties in operations"
+                     << QString ( "'%1 %2'" ).arg ( _currentOperation->operationTypeAsString ( ) )
+                     .arg (  _currentOperation->path ( ) );
+        return;
+    }
+    parameter.insert ( "schema", QJsonObject {
+        { "$ref", parameterBody->schema( ).ref ( ) }
+    } );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerJsonSerializer::_addResponsesForCurrentOperation ( QJsonObject &operationJson ) {

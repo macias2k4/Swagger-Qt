@@ -152,7 +152,11 @@ void SwaggerFiller::_addOperationParameter ( const QJsonValue &parameterValue ) 
         parameterField = new Data::ParameterDefaultField ( );
         _fillSwaggerField ( *parameterField, parameter );
     } else {
-        // parameter in body
+        Data::ParameterInBodyField *bodyParameter = new Data::ParameterInBodyField ( );
+        parameterField = bodyParameter;
+        connect ( bodyParameter, &Data::ParameterInBodyField::setSchemaDetected,
+                  this, &SwaggerFiller::_fillSchemaFromJson );
+        _fillSwaggerField ( *parameterField, parameter );
     }
     if ( _currentOperation->isParameterAlreadyExist ( parameterField ) ) {
         qWarning ( ) << "Can't add parameter" << parameter.value ( "name" ).toString ( )
@@ -160,6 +164,20 @@ void SwaggerFiller::_addOperationParameter ( const QJsonValue &parameterValue ) 
         return;
     }
     _currentOperation->addParameter ( parameterField );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue schemaValue ) {
+    if ( !schema ) {
+        qWarning ( ) << "Can't set schema parameters value. Schema object is null";
+        return;
+    }
+    if ( !schemaValue.isObject ( ) ) {
+        qWarning ( ) << "Can't set schema parameters value. Json input is not an object";
+        return;
+    }
+     QJsonObject schemaObject = schemaValue.toObject ( );
+     _fillSwaggerField ( *schema, schemaObject );
+
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_addOperationResponses ( QJsonValue responses ) {

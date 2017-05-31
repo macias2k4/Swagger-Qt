@@ -20,6 +20,7 @@
 // Swagger-Qt
 #include <Swagger.h>
 #include <ParameterDefaultField.h>
+#include <ParameterInBodyField.h>
 
 namespace Swagger {
 namespace Core {
@@ -71,6 +72,8 @@ private slots:
     // - operations
     /// \brief _addOperationParameters -> adding parameters objects to operation object (sender)
     void _addOperationParameters ( QJsonValue parameters );
+    /// \brief _fillSchemaFromJson -> fill sended schema object parameters by json
+    void _fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue schemaValue );
     /// \brief _addOperationResponses -> adding responses objects to operation object (sender)
     void _addOperationResponses ( QJsonValue responses );
 
