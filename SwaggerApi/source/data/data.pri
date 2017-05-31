@@ -10,7 +10,8 @@ HEADERS += \
     $$PWD/PropertyField.h \
     $$PWD/PostOperationField.h \
     $$PWD/ParameterInBodyField.h \
-    $$PWD/SchemaField.h
+    $$PWD/SchemaField.h \
+    $$PWD/ItemsField.h
 
 SOURCES += \
     $$PWD/Swagger.cpp \
@@ -22,4 +23,5 @@ SOURCES += \
     $$PWD/PropertyField.cpp \
     $$PWD/PostOperationField.cpp \
     $$PWD/ParameterInBodyField.cpp \
-    $$PWD/SchemaField.cpp
+    $$PWD/SchemaField.cpp \
+    $$PWD/ItemsField.cpp

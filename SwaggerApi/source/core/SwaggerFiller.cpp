@@ -175,9 +175,8 @@ void SwaggerFiller::_fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue 
         qWarning ( ) << "Can't set schema parameters value. Json input is not an object";
         return;
     }
-     QJsonObject schemaObject = schemaValue.toObject ( );
-     _fillSwaggerField ( *schema, schemaObject );
-
+    QJsonObject schemaObject = schemaValue.toObject ( );
+    _fillSwaggerField ( *schema, schemaObject );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_addOperationResponses ( QJsonValue responses ) {
@@ -276,6 +275,8 @@ void SwaggerFiller::_addDefinitionProperty ( QJsonValue propertyValue ) {
     }
     QJsonObject property = propertyValue.toObject ( );
     Data::PropertyField *propertyField = new Data::PropertyField ( );
+    connect ( propertyField, &Data::PropertyField::setItemsDetected,
+              this, &SwaggerFiller::_fillItemsFromJson );
     propertyField->setName ( _currentDefinitionPropertyName );
     if ( _currentDefinition->isPropertyAlreadyExist ( propertyField ) ) {
         qWarning ( ) << "Can't add property" << _currentDefinitionPropertyName
@@ -284,6 +285,19 @@ void SwaggerFiller::_addDefinitionProperty ( QJsonValue propertyValue ) {
     }
     _fillSwaggerField ( *propertyField, property );
     _currentDefinition->addProperty ( propertyField );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_fillItemsFromJson ( Data::ItemsField *items, QJsonValue itemsValue ) {
+    if ( !items ) {
+        qWarning ( ) << "Can't set items parameters value. Items object is null";
+        return;
+    }
+    if ( !itemsValue.isObject ( ) ) {
+        qWarning ( ) << "Can't set items parameters value. Json input is not an object";
+        return;
+    }
+    QJsonObject itemsObject = itemsValue.toObject ( );
+    _fillSwaggerField ( *items, itemsObject );
 }
 
 } // Core

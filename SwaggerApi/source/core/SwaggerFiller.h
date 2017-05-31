@@ -72,7 +72,7 @@ private slots:
     // - operations
     /// \brief _addOperationParameters -> adding parameters objects to operation object (sender)
     void _addOperationParameters ( QJsonValue parameters );
-    /// \brief _fillSchemaFromJson -> fill sended schema object parameters by json
+    /// \brief _fillSchemaFromJson -> fill sended schema object parameters from json
     void _fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue schemaValue );
     /// \brief _addOperationResponses -> adding responses objects to operation object (sender)
     void _addOperationResponses ( QJsonValue responses );
@@ -80,6 +80,8 @@ private slots:
     // - definitions
     /// \brief _addDefinitionProperties -> adding properties objects to definition object (sender)
     void _addDefinitionProperties ( QJsonValue properties );
+    /// \brief _fillItemsFromJson -> fill sended items object parameters from json
+    void _fillItemsFromJson ( Data::ItemsField *items, QJsonValue itemsValue );
 
 private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //

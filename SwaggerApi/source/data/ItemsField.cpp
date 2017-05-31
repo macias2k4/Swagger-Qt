@@ -1,14 +1,21 @@
-#include "PropertyField.h"
+#include "ItemsField.h"
 
 namespace Swagger {
 namespace Data {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-PropertyField::PropertyField ( QObject *parent )
+ItemsField::ItemsField ( QObject *parent )
     : Base::SwaggerFieldBase ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-PropertyField::~PropertyField ( ) {
+ItemsField::ItemsField ( const ItemsField &object )
+    : Base::SwaggerFieldBase ( nullptr ),
+      _type                  ( object.type ( ) ),
+      _format                ( object.format ( ) ),
+      _ref                   ( object.ref ( ) ) {
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+ItemsField::~ItemsField ( ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -16,36 +23,22 @@ PropertyField::~PropertyField ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-bool PropertyField::isFieldAlreadySet ( ) const {
-    return !_name.isEmpty ( ) && !_type.isEmpty ( );
+bool ItemsField::isFieldAlreadySet ( ) const {
+    return true;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::clear ( ) {
-    _name = QString ( );
+void ItemsField::clear ( ) {
     _type = QString ( );
     _format = QString ( );
-    _description = QString ( );
+    _ref = QString ( );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString PropertyField::name ( ) const {
-    return _name;
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::setName ( QString name ) {
-    if ( _name == name ) {
-        return;
-    }
-    _name = name;
-    emit nameChanged ( name );
-}
-
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString PropertyField::type ( ) const {
+QString ItemsField::type ( ) const {
     return _type;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::setType ( QString type ) {
+void ItemsField::setType ( QString type ) {
     if ( _type == type ) {
         return;
     }
@@ -54,11 +47,11 @@ void PropertyField::setType ( QString type ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString PropertyField::format ( ) const {
+QString ItemsField::format ( ) const {
     return _format;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::setFormat ( QString format ) {
+void ItemsField::setFormat ( QString format ) {
     if ( _format == format ) {
         return;
     }
@@ -66,30 +59,18 @@ void PropertyField::setFormat ( QString format ) {
     emit formatChanged ( format );
 }
 
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-QString PropertyField::description ( ) const {
-    return _description;
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::setDescription ( QString description ) {
-    if ( _description == description ) {
-        return;
-    }
-    _description = description;
-    emit descriptionChanged ( description );
-}
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-ItemsField PropertyField::items ( ) const {
-    return _items;
+QString ItemsField::ref ( ) const {
+    return _ref;
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
-QJsonValue PropertyField::itemsJson ( ) const {
-    return QJsonValue ( );
-}
-// ────────────────────────────────────────────────────────────────────────────────────────────── //
-void PropertyField::setItemsJson ( QJsonValue itemsValue ) {
-    emit setItemsDetected ( &_items, itemsValue );
+void ItemsField::setRef ( QString ref ) {
+    if ( _ref == ref ) {
+        return;
+    }
+    _ref = ref;
+    emit refChanged ( ref );
 }
 
 } // Data

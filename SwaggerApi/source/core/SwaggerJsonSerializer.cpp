@@ -236,11 +236,19 @@ void SwaggerJsonSerializer::_addCurrentPropertyToPropertiesJson ( QJsonObject &p
                      .arg ( _currentProperty->name ( ) ).arg (  _currentDefinition->name ( ) );
         return;
     }
-    properties.insert ( _currentProperty->name ( ), QJsonObject {
+    QJsonObject property {
         { "type", _currentProperty->type ( ) },
         { "format", _currentProperty->format ( ) },
         { "description", _currentProperty->description ( ) }
-    } );
+    };
+    if ( _currentProperty->type ( ) == "array" ) {
+        property.insert ( "items", QJsonObject {
+            { "type", _currentProperty->items( ).type ( ) },
+            { "format", _currentProperty->items( ).format ( ) },
+            { "$ref", _currentProperty->items( ).ref ( ) }
+        } );
+    }
+    properties.insert ( _currentProperty->name ( ), property );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
