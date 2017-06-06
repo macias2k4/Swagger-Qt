@@ -105,6 +105,8 @@ private:
     /// \brief _extendParameterByBodyParameterProperties -> extending parameter json object by
     /// 'body' _currentParameter property
     void _extendParameterByBodyParameterProperties ( QJsonObject &parameter );
+    /// \brief _addSchemaToObject -> adding schema and his proeprties to passed object
+    void _addSchemaToObject ( QJsonObject &object, const Data::SchemaField &schema );
     /// \brief _addResponsesForCurrentOperation -> adding responses for operation currently adding
     /// to json
     void _addResponsesForCurrentOperation ( QJsonObject &operationJson );

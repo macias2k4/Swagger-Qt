@@ -74,6 +74,8 @@ private slots:
     void _addOperationParameters ( QJsonValue parameters );
     /// \brief _fillSchemaFromJson -> fill sended schema object parameters from json
     void _fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue schemaValue );
+    /// \brief _addSchemaProperties -> adding properties objects to schema object (sender)
+    void _addSchemaProperties (  QJsonValue properties );
     /// \brief _addOperationResponses -> adding responses objects to operation object (sender)
     void _addOperationResponses ( QJsonValue responses );
 
@@ -94,7 +96,11 @@ private:
     QString _lastErrorMessage = QString ( );
     /// \brief _currentOperation -> operation, into which parameters and responses are adding
     Base::OperationFieldBase *_currentOperation = nullptr;
-    /// \brief _currentOperation -> operation, into which parameters and responses are adding
+    /// \brief _currentSchema -> schema, into which properties are adding
+    Data::SchemaField *_currentSchema = nullptr;
+    /// \brief _currentSchemaPropertyName -> name of current adding property to current Schema
+    QString _currentSchemaPropertyName = QString ( );
+    /// \brief _currentDefinition -> definition, into which properties are adding
     Data::DefinitionField *_currentDefinition = nullptr;
     /// \brief _currentDefinitionPropertyName -> name of current adding property to current Definition
     QString _currentDefinitionPropertyName = QString ( );
@@ -115,6 +121,12 @@ private:
     void _addOperationParameter ( const QJsonValue &parameterValue );
     /// \brief _addOperationResponse -> adding single response into current operation
     void _addOperationResponse ( const QString &responseKey, const QJsonValue &responseValue );
+
+    // -- schema
+
+    // - definitions
+    /// \brief _addSchemaProperty -> adding current Property objects to current Schema object
+    void _addSchemaProperty ( QJsonValue propertyValue );
 
     // - definitions
     /// \brief _addDefinitionProperty -> adding current property objects to current definition object

@@ -11,7 +11,8 @@ ResponseField::ResponseField ( QObject *parent )
 ResponseField::ResponseField ( const ResponseField &object )
     : Base::SwaggerFieldBase ( nullptr ),
       _responseKey           ( object.responseKey ( ) ),
-      _description           ( object.description ( ) ) {
+      _description           ( object.description ( ) ),
+      _schema                ( object.schema ( ) ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 ResponseField::~ResponseField ( ) {
@@ -57,6 +58,18 @@ void ResponseField::setDescription ( QString description ) {
     emit descriptionChanged ( description );
 }
 
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QJsonValue ResponseField::schemaJson ( ) const {
+    return QJsonValue ( );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void ResponseField::setSchemaJson ( QJsonValue schemaJson ) {
+    emit setSchemaDetected ( &_schema, schemaJson );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+SchemaField ResponseField::schema ( ) const {
+    return _schema;
+}
 
 } // Data
 } // Swagger

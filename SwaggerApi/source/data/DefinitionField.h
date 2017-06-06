@@ -55,7 +55,6 @@ public:
     /// \brief addProperty -> adding new property object to list
     void addProperty ( PropertyField *property );
 
-
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals

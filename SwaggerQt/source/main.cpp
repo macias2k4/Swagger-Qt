@@ -10,7 +10,7 @@ int main ( int argc, char *argv[] ) {
 //    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/Swagger-Qt/SwaggerQt" );
 //    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-DataProvider" );
 //    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-Compiler" );
-    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-DataAccessServer" );
+    swaggerQt.setSourceCodeFilesPath ( "/media/lampart/data/projekty/source/Qt/PxVS/c++/PxVS-DataPublisher-Plg-CeSIPChannel" );
     swaggerQt.generateSwaggerFile ( );
     return a.exec ( );
 }

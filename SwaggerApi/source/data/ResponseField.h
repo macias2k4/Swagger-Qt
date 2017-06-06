@@ -4,6 +4,7 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // Swagger-Qt
 #include <SwaggerFieldBase.h>
+#include <SchemaField.h>
 
 namespace Swagger {
 namespace Data {
@@ -12,6 +13,7 @@ namespace Data {
 class ResponseField : public Base::SwaggerFieldBase {
     Q_OBJECT
     Q_PROPERTY ( QString description READ description WRITE setDescription NOTIFY descriptionChanged )
+    Q_PROPERTY ( QJsonValue Schema READ schemaJson WRITE setSchemaJson NOTIFY setSchemaDetected )
 
 public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -35,10 +37,18 @@ public:
     QString description ( ) const;
     void setDescription ( QString description );
 
+    /// \brief schemaJson -> return empty JsonValue
+    QJsonValue schemaJson ( ) const;
+    /// \brief setSchemaJson -> inform about detect to try set schema
+    void setSchemaJson ( QJsonValue schemaJson );
+    /// \brief schema -> return definition of the response structure
+    SchemaField schema ( ) const;
+
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // signals
     void descriptionChanged ( QString description );
+    void setSchemaDetected ( SchemaField *schema, QJsonValue schemaValue );
 
 public slots:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -51,6 +61,10 @@ private:
     QString _responseKey = QString ( );
     /// \brief _description -> Required. A short description of the response
     QString _description = QString ( );
+    /// \brief _schema -> A definition of the response structure. It can be a primitive, an array
+    /// or an object. If this field does not exist, it means no content is returned as part of the
+    /// response.
+    SchemaField _schema;
 
 };
 

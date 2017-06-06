@@ -168,15 +168,52 @@ void SwaggerFiller::_addOperationParameter ( const QJsonValue &parameterValue ) 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_fillSchemaFromJson ( Data::SchemaField *schema, QJsonValue schemaValue ) {
     if ( !schema ) {
-        qWarning ( ) << "Can't set schema parameters value. Schema object is null";
+        qWarning ( ) << "Can't set schema value. Schema object is null";
         return;
     }
     if ( !schemaValue.isObject ( ) ) {
-        qWarning ( ) << "Can't set schema parameters value. Json input is not an object";
+        qWarning ( ) << "Can't set schema value. Json input is not an object";
         return;
     }
     QJsonObject schemaObject = schemaValue.toObject ( );
+    connect ( schema, &Data::SchemaField::setPropertiesDetected,
+              this, &SwaggerFiller::_addSchemaProperties );
     _fillSwaggerField ( *schema, schemaObject );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addSchemaProperties ( QJsonValue properties ) {
+    _currentSchema = reinterpret_cast < Data::SchemaField * > ( sender ( ) );
+    if ( !_currentSchema ) {
+        qWarning ( ) << "Can't add properties to Schema. Sender is not Schema object";
+        return;
+    }
+    if ( !properties.isObject ( ) ) {
+        qWarning ( ) << "Can't add properties to Schema. Properties input is not an object";
+        return;
+    }
+    for ( QString key : properties.toObject ( ).keys ( ) ) {
+        _currentSchemaPropertyName = key;
+        _addSchemaProperty ( properties.toObject( ).value ( key ) );
+    }
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerFiller::_addSchemaProperty ( QJsonValue propertyValue ) {
+    if ( !propertyValue.isObject ( ) ) {
+        qWarning ( ) << "Can't add property to current Schema. Property input is not an object";
+        return;
+    }
+    QJsonObject property = propertyValue.toObject ( );
+    Data::PropertyField *propertyField = new Data::PropertyField ( );
+    connect ( propertyField, &Data::PropertyField::setItemsDetected,
+              this, &SwaggerFiller::_fillItemsFromJson );
+    propertyField->setName ( _currentSchemaPropertyName );
+    if ( _currentSchema->isPropertyAlreadyExist ( propertyField ) ) {
+        qWarning ( ) << "Can't add property" << _currentSchemaPropertyName
+                     << "to current Schema. This Schema already has this property";
+        return;
+    }
+    _fillSwaggerField ( *propertyField, property );
+    _currentSchema->addProperty ( propertyField );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerFiller::_addOperationResponses ( QJsonValue responses ) {
@@ -209,6 +246,8 @@ void SwaggerFiller::_addOperationResponse ( const QString &responseKey,
                      << "to current operation. This operation already has this response";
         return;
     }
+    connect ( responseField, &Data::ResponseField::setSchemaDetected,
+              this, &SwaggerFiller::_fillSchemaFromJson );
     _fillSwaggerField ( *responseField, response );
     _currentOperation->addResponse ( responseField );
 }

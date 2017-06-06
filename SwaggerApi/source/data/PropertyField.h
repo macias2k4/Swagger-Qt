@@ -29,6 +29,7 @@ public:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // constructors
     explicit PropertyField ( QObject *parent = 0 );
+    PropertyField ( const PropertyField &object );
     ~PropertyField ( );
 
     // ────────────────────────────────────────────────────────────────────────────────────────── //

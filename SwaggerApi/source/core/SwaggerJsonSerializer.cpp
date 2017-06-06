@@ -168,9 +168,24 @@ void SwaggerJsonSerializer::_extendParameterByBodyParameterProperties ( QJsonObj
                      .arg (  _currentOperation->path ( ) );
         return;
     }
-    parameter.insert ( "schema", QJsonObject {
-        { "$ref", parameterBody->schema( ).ref ( ) }
-    } );
+    _addSchemaToObject ( parameter, parameterBody->schema ( ) );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_addSchemaToObject ( QJsonObject &object,
+        const Data::SchemaField &schema ) {
+    QJsonObject schemaJson;
+    if ( !schema.ref ( ).isEmpty ( ) ) {
+        schemaJson.insert ( "$ref", schema.ref ( ) );
+    } else {
+        schemaJson.insert ( "type", schema.type ( ) );
+        QJsonObject properties;
+        for ( Data::PropertyField *property : schema.properties ( ) ) {
+            _currentProperty = property;
+            _addCurrentPropertyToPropertiesJson ( properties );
+        }
+        schemaJson.insert ( "properties", properties );
+    }
+    object.insert ( "schema", schemaJson );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerJsonSerializer::_addResponsesForCurrentOperation ( QJsonObject &operationJson ) {
@@ -188,9 +203,11 @@ void SwaggerJsonSerializer::_addCurrentResponseToResponsesJson ( QJsonObject &re
                      .arg ( _currentOperation->operationTypeAsString ( ) ).arg (  _currentOperation->path ( ) );
         return;
     }
-    responses.insert ( _currentResponse->responseKey ( ), QJsonObject {
+    QJsonObject response {
         { "description", _currentResponse->description ( ) }
-    } );
+    };
+    _addSchemaToObject ( response, _currentResponse->schema ( ) );
+    responses.insert ( _currentResponse->responseKey ( ), response );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -243,8 +260,6 @@ void SwaggerJsonSerializer::_addCurrentPropertyToPropertiesJson ( QJsonObject &p
     };
     if ( _currentProperty->type ( ) == "array" ) {
         property.insert ( "items", QJsonObject {
-            { "type", _currentProperty->items( ).type ( ) },
-            { "format", _currentProperty->items( ).format ( ) },
             { "$ref", _currentProperty->items( ).ref ( ) }
         } );
     }

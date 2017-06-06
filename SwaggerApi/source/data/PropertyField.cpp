@@ -8,6 +8,15 @@ PropertyField::PropertyField ( QObject *parent )
     : Base::SwaggerFieldBase ( parent ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+PropertyField::PropertyField ( const PropertyField &object )
+    : Base::SwaggerFieldBase ( ),
+      _name                  ( object.name ( ) ),
+      _type                  ( object.type ( ) ),
+      _format                ( object.format ( ) ),
+      _description           ( object.description ( ) ),
+      _items                 ( object.items ( ) ) {
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 PropertyField::~PropertyField ( ) {
 }
 
