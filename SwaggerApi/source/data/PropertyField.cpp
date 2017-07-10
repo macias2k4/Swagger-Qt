@@ -89,6 +89,19 @@ void PropertyField::setDescription ( QString description ) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString PropertyField::ref ( ) const {
+    return _ref;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void PropertyField::setRef ( QString ref ) {
+    if ( _ref == ref ) {
+        return;
+    }
+    _ref = ref;
+    emit refChanged ( ref );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 ItemsField PropertyField::items ( ) const {
     return _items;
 }

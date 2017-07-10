@@ -1,0 +1,11 @@
+{
+    \"Name\" : \"Swagger\",
+    \"Version\" : \"0.0.1\",
+    \"CompatVersion\" : \"0.0.1\",
+    \"Vendor\" : \"Macias\",
+    \"Copyright\" : \"(C) 2017 Maciej Lamparski\",
+    \"License\" : \"LGPL\",
+    \"Description\" : \"Creating Swagger documentation based on annotation in code\",
+    \"Url\" : \"https://github.com/macias2k4/Swagger-Qt\",
+    $$dependencyList
+}

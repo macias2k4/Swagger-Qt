@@ -1,8 +1,7 @@
 /**
   * \file     SwaggerApi.h
   * \author   m.lamparski
-  * \date     2017-04-05 -> $Date$
-  * \version  $Revision$
+  * \date     2017-04-05
   * \brief    Main class of library to interprate Swagger annotation written in source code in set
   * path
 
@@ -40,8 +39,15 @@ public:
 
 
     // - property
+    /// \brief sourceCodeFilesPath -> return path to the source files to search
+    QString sourceCodeFilesPath ( ) const;
     /// \brief setSourceCodeFilesPath -> set path to the source files to search
     void setSourceCodeFilesPath ( const QString &sourceCodeFilesPath );
+
+    /// \brief outputDocumentationPath -> return path to output Swagger Api
+    QString outputDocumentationPath ( ) const;
+    /// \brief setOutputDocumentationPath -> set path to output Swagger Api
+    void setOutputDocumentationPath ( const QString &outputDocumentationPath );
 
 signals:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
@@ -57,7 +63,9 @@ private:
     /// \brief _ModuleName -> name of module
     const QString _ModuleName = "<SwaggerAnnotation>";
     /// \brief _sourceCodeFilesPath -> path to the source files to search
-    QString _sourceCodeFilesPath = QString ( );
+    QString _sourceCodeFilesPath;
+    /// \brief _outputDocumentationPath -> path to output Swagger Api
+    QString _outputDocumentationPath;
     /// \brief _lastError -> last error message
     QString _lastErrorMessage = QString ( );
     /// \brief _annotationFinder -> object to search annotation in source code files

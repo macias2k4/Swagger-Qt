@@ -59,7 +59,6 @@ void ItemsField::setFormat ( QString format ) {
     emit formatChanged ( format );
 }
 
-
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 QString ItemsField::ref ( ) const {
     return _ref;

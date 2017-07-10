@@ -68,11 +68,11 @@ private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
     /// \brief _type -> Required. The type of the property
-    QString _type = QString ( );
+    QString _type;
     /// \brief _format -> The extending format for the previously mentioned type
-    QString _format = QString ( );
+    QString _format;
     /// \brief _ref -> keep reference to another JSON value in a JSON document
-    QString _ref = QString ( );
+    QString _ref;
 
 };
 

@@ -66,7 +66,7 @@ void SwaggerApi::_serializeSwaggerToJson ( ) {
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerApi::_saveSwaggerJsonToFile ( ) {
-    QFile file ( "/media/lampart/data/projekty/source/Qt/QtSwagger.json" );
+    QFile file ( QString ( "%1/QtSwagger.json" ).arg ( _outputDocumentationPath ) );
     if ( !file.open ( QIODevice::ReadWrite ) ) {
         qWarning ( ) << "Can't save swagger file" << file.fileName ( );
     }
@@ -76,8 +76,21 @@ void SwaggerApi::_saveSwaggerJsonToFile ( ) {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 // - property
+QString SwaggerApi::sourceCodeFilesPath ( ) const {
+    return _sourceCodeFilesPath;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerApi::setSourceCodeFilesPath ( const QString &sourceCodeFilesPath ) {
     _sourceCodeFilesPath = sourceCodeFilesPath;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString SwaggerApi::outputDocumentationPath ( ) const {
+    return _outputDocumentationPath;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerApi::setOutputDocumentationPath ( const QString &outputDocumentationFilePath ) {
+    _outputDocumentationPath = outputDocumentationFilePath;
 }
 
 } // Core

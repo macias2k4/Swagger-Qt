@@ -249,19 +249,22 @@ void SwaggerJsonSerializer::_addPropertiesForCurrentDefinition ( QJsonObject &de
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerJsonSerializer::_addCurrentPropertyToPropertiesJson ( QJsonObject &properties ) {
     if ( !_currentProperty ) {
-        qWarning ( ) << "Can't add single property to definition" << QString ( "'%1 %2'" )
-                     .arg ( _currentProperty->name ( ) ).arg (  _currentDefinition->name ( ) );
+        qWarning ( ) << "Can't add single property to definition" << QString ( "%1'" )
+                     .arg (  _currentDefinition->name ( ) );
         return;
     }
-    QJsonObject property {
-        { "type", _currentProperty->type ( ) },
-        { "format", _currentProperty->format ( ) },
-        { "description", _currentProperty->description ( ) }
-    };
-    if ( _currentProperty->type ( ) == "array" ) {
-        property.insert ( "items", QJsonObject {
-            { "$ref", _currentProperty->items( ).ref ( ) }
-        } );
+    QJsonObject property;
+    if ( !_currentProperty->ref ( ).isEmpty ( ) ) {
+        property.insert ( "$ref", _currentProperty->ref ( ) );
+    } else {
+        property.insert ( "type", _currentProperty->type ( ) );
+        property.insert ( "format", _currentProperty->format ( ) );
+        property.insert ( "description", _currentProperty->description ( ) );
+        if ( _currentProperty->type ( ) == "array" ) {
+            property.insert ( "items", QJsonObject {
+                { "$ref", _currentProperty->items( ).ref ( ) }
+            } );
+        }
     }
     properties.insert ( _currentProperty->name ( ), property );
 }

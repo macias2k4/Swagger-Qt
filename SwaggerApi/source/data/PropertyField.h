@@ -23,6 +23,7 @@ class PropertyField : public Base::SwaggerFieldBase {
     Q_PROPERTY ( QString type READ type WRITE setType NOTIFY typeChanged )
     Q_PROPERTY ( QString format READ format WRITE setFormat NOTIFY formatChanged )
     Q_PROPERTY ( QString description READ description WRITE setDescription NOTIFY descriptionChanged )
+    Q_PROPERTY ( QString ref READ ref WRITE setRef NOTIFY refChanged )
     Q_PROPERTY ( QJsonValue Items READ itemsJson WRITE setItemsJson NOTIFY setItemsDetected )
 
 public:
@@ -53,6 +54,11 @@ public:
     QString description ( ) const;
     void setDescription ( QString description );
 
+    /// \brief ref -> return reference to another JSON value in a JSON document
+    QString ref ( ) const;
+    /// \brief setRef -> set reference to another JSON value in a JSON document
+    void setRef ( QString ref );
+
     /// \brief items -> retrun describe of items in the array.
     ItemsField items ( ) const;
     QJsonValue itemsJson ( ) const;
@@ -65,6 +71,7 @@ signals:
     void typeChanged ( QString type );
     void formatChanged ( QString format );
     void descriptionChanged ( QString description );
+    void refChanged ( QString ref );
     void setItemsDetected ( ItemsField *items, QJsonValue itemsValue );
 
 public slots:
@@ -75,15 +82,18 @@ private:
     // ────────────────────────────────────────────────────────────────────────────────────────── //
     // property
     /// \brief _name -> Required. Name of the property
-    QString _name = QString ( );
+    QString _name;
     /// \brief _type -> Required. The type of the property
-    QString _type = QString ( );
+    QString _type;
     /// \brief _format -> The extending format for the previously mentioned type
-    QString _format = QString ( );
+    QString _format;
     /// \brief _description -> A verbose explanation of property meaning
-    QString _description = QString ( );
+    QString _description;
+    /// \brief _ref -> keep reference to another JSON value in a JSON document
+    QString _ref;
     /// \brief _items -> Required if type is "array". Describes the type of items in the array.
     ItemsField _items;
+
 };
 
 } // Data
