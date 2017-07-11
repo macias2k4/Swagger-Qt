@@ -2,9 +2,17 @@ DEFINES += SWAGGER_LIBRARY
 
 # Swagger files
 include($$PWD/source/source.pri)
+#include($$PWD/../SwaggerApi/source/source.pri)
 
 # link library: SwaggeerApi
-LIBS += -L$$OUT_PWD/../SwaggerApi -lSwaggerApi
+#LIBS += -L$$OUT_PWD/../SwaggerApi -lSwaggerApi
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SwaggerApi/release/ -lSwaggerApi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SwaggerApi/debug/ -lSwaggerApi
+else:unix: LIBS += -L$$OUT_PWD/../SwaggerApi/ -lSwaggerApi
+
+INCLUDEPATH += $$PWD/../SwaggerApi
+DEPENDPATH += $$PWD/../SwaggerApi
 
 LIBS += -L../projectexplorer \
         -lProjectExplorer
@@ -46,3 +54,4 @@ QTC_PLUGIN_RECOMMENDS += \
 ###### End _dependencies.pri contents ######
 
 include($$IDE_SOURCE_TREE/src/qtcreatorplugin.pri)
+

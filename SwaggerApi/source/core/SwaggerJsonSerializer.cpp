@@ -234,6 +234,9 @@ QJsonObject SwaggerJsonSerializer::_createDefinitionJson ( ) {
     QJsonObject definitionJson {
         { "type", _currentDefinition->type ( ) }
     };
+    if ( !_currentDefinition->description ( ).isEmpty ( ) ) {
+        definitionJson.insert ( "description", _currentDefinition->description ( ) );
+    }
     _addPropertiesForCurrentDefinition ( definitionJson );
     return definitionJson;
 }

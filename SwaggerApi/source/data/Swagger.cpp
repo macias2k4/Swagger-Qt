@@ -46,7 +46,7 @@ void Swagger::_clearOperations ( ) {
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void Swagger::_clearDefinitions ( ) {
     while ( !_definitions.isEmpty ( ) ) {
-        delete _operations.takeFirst ( );
+        delete _definitions.takeFirst ( );
     }
 }
 

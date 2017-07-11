@@ -21,6 +21,7 @@ class DefinitionField : public Base::SwaggerFieldBase {
     Q_OBJECT
     Q_PROPERTY ( QString name READ name WRITE setName NOTIFY nameChanged )
     Q_PROPERTY ( QString type READ type WRITE setType NOTIFY typeChanged )
+    Q_PROPERTY ( QString description READ description WRITE setDescription NOTIFY descriptionChanged )
     Q_PROPERTY ( QJsonValue Properties READ propertiesJson WRITE setPropertiesJson NOTIFY
                  setPropertiesDetected )
 
@@ -45,6 +46,9 @@ public:
     QString type ( ) const;
     void setType ( QString type );
 
+    QString description ( ) const;
+    void setDescription ( QString description );
+
     QJsonValue propertiesJson ( ) const;
     void setPropertiesJson ( QJsonValue properties );    
     QList<PropertyField *> properties ( ) const;
@@ -60,6 +64,7 @@ signals:
     // signals
     void nameChanged ( QString name );
     void typeChanged ( QString type );
+    void descriptionChanged ( QString description );
     void setPropertiesDetected ( QJsonValue properties );
 
 public slots:
@@ -73,6 +78,8 @@ private:
     QString _name = QString ( );
     /// \brief _type -> name of definition
     QString _type = QString ( );
+    /// \brief _description -> description of the definition
+    QString _description = QString ( );
     /// \brief _parameters -> list of operation parameters
     QList < PropertyField * > _properties;
 

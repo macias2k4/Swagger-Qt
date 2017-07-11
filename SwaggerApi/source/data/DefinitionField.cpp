@@ -9,6 +9,7 @@ DefinitionField::DefinitionField ( QObject *parent )
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 DefinitionField::~DefinitionField ( ) {
+    clear ( );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -53,6 +54,19 @@ void DefinitionField::setType ( QString type ) {
     }
     _type = type;
     emit typeChanged ( type );
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+QString DefinitionField::description ( ) const {
+    return _description;
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void DefinitionField::setDescription ( QString description ) {
+    if ( _description == description ) {
+        return;
+    }
+    _description = description;
+    emit descriptionChanged ( description );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
