@@ -78,6 +78,7 @@ void AnnotationFinder::_checkIsCurrentLineStartAnnotationBlock ( ) {
     if ( !_isAnnotationBlockStarted
             && _currentLine.indexOf ( Swagger::Base::SwaggerFieldBase::AnnotationKeyword ) > 0 ) {
         _clearAllSingleAnnotationVariables ( );
+        qDebug ( ) << "Current line in file:" << _currentSourceCodeFileInfo.fileName ( ) << "start annotation:" << _currentLine;
         _isAnnotationBlockStarted = true;
         _extractCommentSignsFromCurrentLine ( );
         _extractAnnotationNameFromCurrentLine ( );

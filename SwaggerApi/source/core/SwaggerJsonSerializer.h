@@ -99,6 +99,9 @@ private:
     /// \brief _addCurrentParameterToParametersJson -> adding current parameter for operation currently
     /// adding to json
     void _addCurrentParameterToParametersJson ( QJsonArray &parameters );
+    /// \brief _extendParameterByHeaderParameterProperties ->  extending parameter json object by
+    /// 'header' _currentParameter property
+    void _extendParameterByHeaderParameterProperties ( QJsonObject &parameter );
     /// \brief _extendParameterByDefaultParameterProperties -> extending parameter json object by
     /// Default (in different then 'body') _currentParameter property
     void _extendParameterByDefaultParameterProperties ( QJsonObject &parameter );

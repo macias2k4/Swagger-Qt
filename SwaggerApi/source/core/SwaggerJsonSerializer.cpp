@@ -125,12 +125,27 @@ void SwaggerJsonSerializer::_addCurrentParameterToParametersJson ( QJsonArray &p
         { "description", _currentParameter->description ( ) },
         { "required", _currentParameter->required ( ) }
     };
-    if ( !_currentParameter->in ( ).isEmpty ( ) && ( _currentParameter->in ( ) != "body" ) ) {
+    if (  _currentParameter->in ( ) == "header" ) {
+        _extendParameterByHeaderParameterProperties ( parameter );
+    } else if ( !_currentParameter->in ( ).isEmpty ( ) && ( _currentParameter->in ( ) != "body" ) ) {
         _extendParameterByDefaultParameterProperties ( parameter );
     } else {
         _extendParameterByBodyParameterProperties ( parameter );
     }
     parameters.append ( parameter );
+}
+// ────────────────────────────────────────────────────────────────────────────────────────────── //
+void SwaggerJsonSerializer::_extendParameterByHeaderParameterProperties ( QJsonObject &parameter ) {
+    Data::ParameterDefaultField *parameterHeader = reinterpret_cast < Data::ParameterDefaultField * >
+            ( _currentParameter );
+    if ( !parameterHeader ) {
+        qWarning ( ) << "Can't extend json parameter object by 'header' parameter properties in operations"
+                     << QString ( "'%1 %2'" ).arg ( _currentOperation->operationTypeAsString ( ) )
+                     .arg (  _currentOperation->path ( ) );
+        return;
+    }
+    parameter.insert ( "type", parameterHeader->type ( ) );
+    parameter.insert ( "format", parameterHeader->format ( ) );
 }
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerJsonSerializer::_extendParameterByDefaultParameterProperties ( QJsonObject &parameter ) {

@@ -16,7 +16,7 @@ SwaggerQt::~SwaggerQt ( ) {
 
 // ────────────────────────────────────────────────────────────────────────────────────────────── //
 void SwaggerQt::generateSwaggerFile ( ) {
-    _swaggerApi.setOutputDocumentationPath ( "/home/macias/" );
+    _swaggerApi.setOutputDocumentationPath ( "/home/lampart/" );
     _swaggerApi.interprete ( );
 }
 
