@@ -141,7 +141,7 @@ private:
     /// \brief _collectionFormat -> Determines the format of the array if type array is used
     QString _collectionFormat = _acceptableCollectionFormat [ 0 ];
     /// \brief _maximum -> maximum value of parameter
-    double _maximum = 0;
+    double _maximum = 0xffffffff;
     /// \brief _exclusiveMaximum -> exclusive maximum value
     bool _exclusiveMaximum = true;
     /// \brief _minimum -> minimum value of parameter
@@ -149,13 +149,13 @@ private:
     /// \brief _exclusiveMinimum -> exclusive minimum value
     bool _exclusiveMinimum = true;
     /// \brief _maxLength -> maximum length
-    qint32 _maxLength = 0;
+    qint32 _maxLength = 255;
     /// \brief _minLength -> minimum length
     qint32 _minLength = 0;
     /// \brief _pattern -> pattern
     QString _pattern = QString ( );
     /// \brief _maxItems -> maximum number of items
-    qint32 _maxItems = 0;
+    qint32 _maxItems = 100;
     /// \brief _minItems -> minimum number of items
     qint32 _minItems = 0;
     /// \brief _uniqueItems -> unique items
